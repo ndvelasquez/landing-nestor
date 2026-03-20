@@ -1,11 +1,111 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import BaseLayout from '../layouts/BaseLayout.astro';
+const whatsapp = 'https://wa.me/50769050014';
+const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
+const resume = 'Nestor_Velasquez_CV.pdf';
+const capabilities = [
+  'Data conversion & ETL orchestration (SQL, REST, WSDL, CSV/XML)',
+  'Automation with n8n, Zapier, Python, and custom workflows',
+  'SaaS FP&A support: planning models, dashboards, reconciliation',
+  'Incident leadership for L2/L3 teams with 100% SLA track record',
+  'Tooling: Jira, Confluence, Zoho, ServiceNow, Splunk, Postman',
+];
+const automationHighlights = [
+  {
+    title: 'Financial data conversions',
+    body: 'Normalize legacy ERP exports, validate SQL transformations, and push curated batches into FP&A layers without breaking downstream reporting.',
+    icon: 'assets/icons/data.png',
+  },
+  {
+    title: 'Batch automations',
+    body: 'Design ETL flows (n8n, Zapier, REST) that keep CRM, ERP, and planning dashboards in sync while cutting reconciliation time by 50%+',
+    icon: 'assets/icons/flow.png',
+  },
+  {
+    title: 'Precision support',
+    body: 'Blend analytical troubleshooting with clear stakeholder updates so migrations land on time and teams stay confident in their numbers.',
+    icon: 'assets/icons/support.png',
+  },
+];
+const timeline = [
+  {
+    role: 'Product Support Engineer — BDG S.A',
+    time: 'Aug 2025 – Present',
+    detail: 'Lead L3 data-conversion projects, automate ERP→FP&A sync, steward ~40 complex tickets/month with 100% SLA.',
+  },
+  {
+    role: 'Senior Support & Data Integration Specialist — Jooycar',
+    time: 'Sep 2021 – Sep 2025',
+    detail: 'Built ETL automations for >200 enterprise accounts, troubleshot REST/SQL pipelines, documented playbooks in Jira/Confluence.',
+  },
+  {
+    role: 'Data Integration Analyst — Lean Tech (freelance)',
+    time: 'Apr 2023 – Jun 2024',
+    detail: 'Diagnosed AWS-hosted ETL jobs with Splunk+SQL, validated APIs in Postman before FP&A migrations.',
+  },
+];
 ---
+<BaseLayout title="Nestor David Velasquez" description="Automation-first product support engineer">
+  <section class="card hero">
+    <p class="pill">Automation-first Product Support Engineer</p>
+    <h1>Transforming data conversions into predictable, human experiences.</h1>
+    <p>
+      6+ years helping SaaS FP&A platforms, marketplaces, and IoT products ship accurate
+      forecasts. I bridge legacy ERPs, planning models, and support workflows with automation,
+      so finance teams ship reports on time and customers stay confident.
+    </p>
+    <div class="cta-row">
+      <a class="cta primary" href={whatsapp} target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <a class="cta secondary" href={linkedin} target="_blank" rel="noopener">Connect on LinkedIn</a>
+      <a class="cta secondary" href={resume} target="_blank" rel="noopener">Download CV</a>
+    </div>
+  </section>
 
-<Layout>
-	<Welcome />
-</Layout>
+  <section class="card">
+    <h2>What I bring to every engagement</h2>
+    <ul class="clean">
+      {capabilities.map((cap) => (
+        <li>{cap}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Automation & Support Highlights</h2>
+    <div class="automation-grid">
+      {automationHighlights.map((item) => (
+        <article class="automation-card">
+          <img src={item.icon} alt={item.title} width="96" height="96" loading="lazy" />
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Journey</h2>
+    <ul class="timeline">
+      {timeline.map((job) => (
+        <li>
+          <strong>{job.role}</strong>
+          <div style="font-size: 0.9rem; color: rgba(16, 24, 32, 0.7);">{job.time}</div>
+          <p style="margin-top: 0.25rem;">{job.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Let’s design smoother launches</h2>
+    <p>
+      Whether you need to migrate thousands of historical records, keep planning dashboards in sync, or unblock
+      your support queues, I can slot into your workflows quickly and co-own the roadmap with your product and
+      operations teams.
+    </p>
+    <div class="cta-row">
+      <a class="cta primary" href={whatsapp} target="_blank" rel="noopener">Start a conversation</a>
+      <a class="cta secondary" href="mailto:ndvelasquezl@gmail.com">Email</a>
+    </div>
+  </section>
+</BaseLayout>

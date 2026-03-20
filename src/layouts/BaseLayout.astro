@@ -1,0 +1,235 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Nestor David Velasquez",
+  description = "Automation-first product support engineer",
+} = Astro.props as Props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #101820;
+        --deep: #00313c;
+        --glow: #9adbe8;
+        --surface: #f4f6f8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body {
+        margin: 0;
+        font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: radial-gradient(circle at 20% -10%, rgba(154, 219, 232, 0.45), transparent 45%),
+          radial-gradient(circle at 80% 10%, rgba(0, 49, 60, 0.25), transparent 40%),
+          var(--surface);
+        color: var(--ink);
+        line-height: 1.6;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+      body::before,
+      body::after {
+        content: '';
+        position: fixed;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.4;
+        z-index: 0;
+      }
+      body::before {
+        background: rgba(0, 49, 60, 0.25);
+        top: -120px;
+        right: -150px;
+      }
+      body::after {
+        background: rgba(154, 219, 232, 0.4);
+        bottom: -180px;
+        left: -120px;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3.5rem 1.5rem 4rem;
+        position: relative;
+        z-index: 1;
+      }
+      section + section {
+        margin-top: 3rem;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #f7fbff;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+      }
+      .card {
+        background: rgba(16, 24, 32, 0.92);
+        color: #e9f4f7;
+        border-radius: 24px;
+        padding: 2.25rem;
+        box-shadow: 0 25px 60px rgba(1, 9, 21, 0.45);
+        border: 1px solid rgba(154, 219, 232, 0.08);
+        transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        animation: fadeIn 0.8s ease forwards;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(154, 219, 232, 0.4);
+        box-shadow: 0 35px 80px rgba(16, 24, 32, 0.25);
+      }
+      .card.hero {
+        background: linear-gradient(135deg, var(--deep), #0c4250);
+        color: white;
+        box-shadow: 0 30px 70px rgba(0, 49, 60, 0.35);
+      }
+      .card.hero h1,
+      .card.hero p,
+      .card.hero .pill {
+        color: white;
+      }
+      .pill {
+        display: inline-flex;
+        gap: 0.35rem;
+        align-items: center;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        background: rgba(154, 219, 232, 0.3);
+        color: var(--deep);
+      }
+      .card.hero .pill {
+        background: rgba(154, 219, 232, 0.25);
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+      .cta {
+        padding: 0.85rem 1.5rem;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .cta.primary {
+        background: var(--deep);
+        color: white;
+        box-shadow: 0 10px 25px rgba(0, 49, 60, 0.35);
+      }
+      .cta.secondary {
+        background: white;
+        color: var(--deep);
+        border: 1px solid rgba(0, 49, 60, 0.12);
+      }
+      .card.hero .cta.secondary {
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      .cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(16, 24, 32, 0.15);
+      }
+      ul.clean {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.65rem;
+      }
+      ul.clean li {
+        padding: 0.75rem 1rem;
+        background: rgba(154, 219, 232, 0.18);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 49, 60, 0.08);
+      }
+      ul.timeline {
+        border-left: 2px solid rgba(0, 49, 60, 0.2);
+        padding-left: 1.25rem;
+        margin: 0;
+        display: grid;
+        gap: 1.25rem;
+      }
+      ul.timeline li {
+        position: relative;
+      }
+      .automation-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .automation-card {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 18px;
+        padding: 1.35rem;
+        box-shadow: inset 0 0 0 1px rgba(0, 49, 60, 0.08);
+        border: 1px solid rgba(0, 49, 60, 0.08);
+      }
+      .automation-card h3 {
+        margin-top: 0;
+      }
+      .automation-card img {
+        display: block;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 12px 25px rgba(154, 219, 232, 0.35));
+      }
+      .automation-card {
+        transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+      .automation-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(154, 219, 232, 0.4);
+      }
+      ul.timeline li::before {
+        content: '';
+        position: absolute;
+        left: -1.45rem;
+        top: 0.4rem;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--glow);
+      }
+      @media (max-width: 720px) {
+        main {
+          padding: 2.5rem 1rem 3rem;
+        }
+        .card {
+          padding: 1.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
