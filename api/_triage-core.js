@@ -141,6 +141,13 @@ const SAFE_FAILURES = new Set([
   'bad evidence',
   'bad runner_up',
 ]);
+// Documented Gemini finishReason values. Anything else is provider-controlled
+// text and is replaced by the fixed reason below.
+const KNOWN_FINISH_REASONS = new Set([
+  'FINISH_REASON_UNSPECIFIED', 'MAX_TOKENS', 'SAFETY', 'RECITATION', 'LANGUAGE', 'OTHER',
+  'BLOCKLIST', 'PROHIBITED_CONTENT', 'SPII', 'MALFORMED_FUNCTION_CALL', 'UNEXPECTED_TOOL_CALL',
+  'TOO_MANY_TOOL_CALLS', 'IMAGE_SAFETY', 'IMAGE_PROHIBITED_CONTENT', 'IMAGE_OTHER', 'NO_IMAGE', 'IMAGE_RECITATION',
+]);
 export function publicReason(reason) {
   if (typeof reason !== 'string' || !reason.startsWith(FAILED)) return reason;
   const msg = reason.slice(FAILED.length);
@@ -148,7 +155,8 @@ export function publicReason(reason) {
   const call = /^model call failed \(HTTP (\d{3}|timeout|network)\)$/.exec(msg);
   if (call) return FAILED + 'model call failed (HTTP ' + call[1] + ')';
   if (msg.startsWith('model call failed')) return FAILED + 'model call failed';
-  if (/^response not complete: [A-Z_]{1,40}$/.test(msg)) return reason;
+  const fin = /^response not complete: ([A-Z_]{1,40})$/.exec(msg);
+  if (fin && KNOWN_FINISH_REASONS.has(fin[1])) return reason;
   if (msg.startsWith('response not complete')) return FAILED + 'response not complete';
   return FAILED + 'unusable model response';
 }

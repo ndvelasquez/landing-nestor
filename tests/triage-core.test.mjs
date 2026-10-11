@@ -329,6 +329,8 @@ check('...and the decision is unchanged (human review, stable reason)', b.needs_
 f = fakeFetch(() => new Response(JSON.stringify(gem({}, 'DO_NOT_EXPOSE <b>x</b>')), { status: 200 }));
 text = await (await createHandler({ env: env(), fetchImpl: f })(req())).text();
 check('odd finishReason from the provider is not echoed', !text.includes('DO_NOT_EXPOSE') && JSON.parse(text).review_reasons[0] === 'classification failed: response not complete');
+check('uppercase unknown finishReason is not echoed', publicReason('classification failed: response not complete: PROVIDER_INTERNAL_DETAIL') === 'classification failed: response not complete');
+check('known finishReason is kept', publicReason('classification failed: response not complete: MAX_TOKENS') === 'classification failed: response not complete: MAX_TOKENS');
 
 f = fakeFetch(() => new Response('not json at all', { status: 200 }));
 r = await createHandler({ env: env(), fetchImpl: f })(req());
