@@ -1,119 +1,35 @@
-# Nestor David Velasquez — Portfolio Landing Page
+# landing-nestor
 
-Portfolio site for **Nestor David Velasquez**, Automation-first Product Support Engineer specializing in SaaS FP&A, data conversions, and workflow automation.
+Landing page and case study for Nestor Velasquez, Zendesk Support Ops Automation for SaaS and ecommerce teams.
 
-**Live Demo:** [Deploy on Vercel](https://vercel.com) *(pending deployment)*
+## Stack
 
----
+- Astro 6, static output, no client-side JavaScript
+- Plain CSS. Every color, type size, space step and radius is a CSS variable in `src/styles/tokens.css`, a 1:1 mirror of `brand/tokens.json` in the freelancer project. Do not add color values anywhere else.
+- Fonts: Gloock and Schibsted Grotesk from Google Fonts
 
-## 🎨 Brand Guidelines
+## Structure
 
-This project follows the **SmartNest Solutions** brand manual:
+- `src/pages/index.astro`: home
+- `src/pages/work/ai-ticket-triage.astro`: case study of the triage demo
+- `src/layouts/Site.astro`: head (SEO, Open Graph, JSON-LD), header, footer
+- `src/components/`: `EvidenceCard` (hero ticket), `Icon` (inline SVG icons)
+- `public/`: favicons, `og.png`, workflow screenshot, CV
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Ink (Primary Dark) | `#101820` | Text, backgrounds |
-| Deep Teal | `#00313C` | Primary accents, CTAs |
-| Glow Cyan | `#9ADBE8` | Highlights, icons, borders |
-| Surface | `#F4F6F8` | Light backgrounds (light mode) |
-
-**Typography:** Nunito (Google Fonts) — weights 400, 600, 700
-
-**Visual Style:** Dark theme by default, glassmorphism cards, fluid microinteractions, minimal aesthetic.
-
----
-
-## 🚀 Project Structure
+## Commands
 
 ```
-landing/
-├── public/
-│   ├── assets/
-│   │   └── icons/          # Generated icons (Nano Banana Pro)
-│   │       ├── data.png
-│   │       ├── flow.png
-│   │       └── support.png
-│   ├── Nestor_Velasquez_CV.pdf
-│   └── favicon.ico
-├── src/
-│   ├── layouts/
-│   │   └── BaseLayout.astro   # Global styles, theme config
-│   └── pages/
-│       └── index.astro        # Main landing page
-├── dist/                      # Production build output
-├── package.json
-├── astro.config.mjs
-└── tsconfig.json
-```
-
----
-
-## 🛠 Tech Stack
-
-- **Framework:** Astro 6.x (static site generation)
-- **Language:** TypeScript
-- **Styling:** Inline CSS with CSS custom properties (brand tokens)
-- **Icons:** Custom-generated via Nano Banana Pro (brand colors)
-- **Hosting:** Vercel-ready (static output)
-
----
-
-## 📦 Commands
-
-| Command | Action |
-|---------|--------|
-| `npm install` | Install dependencies |
-| `npm run dev` | Start local dev server at `localhost:4321` |
-| `npm run build` | Build production site to `./dist/` |
-| `npm run preview` | Preview production build locally |
-
----
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push code to GitHub (this repo)
-2. Import project in Vercel Dashboard
-3. Select this repo and deploy
-4. Vercel auto-detects Astro and deploys
-
-**Environment Variables:** None required (static site)
-
-### Manual Build
-
-```bash
 npm install
-npm run build
-# Upload ./dist to any static host (Netlify, Cloudflare Pages, etc.)
+npm run dev      # local server at http://localhost:4321
+npm run build    # static site in dist/
+npm run preview  # serve dist/ locally
 ```
 
----
+Requires Node 22.12 or newer.
 
-## 📄 Content Sections
+## Notes
 
-1. **Hero** — Value proposition + CTAs (WhatsApp, LinkedIn, CV download)
-2. **Capabilities** — Core skills in automation & support
-3. **Automation Highlights** — Three key service areas with custom icons
-4. **Journey** — Timeline of professional experience
-5. **CTA** — Final call-to-action for collaboration
+- `site` in `astro.config.mjs` is the planned Vercel URL. Confirm it when the Vercel project exists; canonical and Open Graph URLs depend on it.
+- `public/favicon.svg` repeats two token colors as literal values because an SVG favicon cannot read CSS variables. If the mark or ink color changes, update it and regenerate `favicon.ico` and `apple-touch-icon.png`.
 
----
-
-## 🎯 Goals
-
-- Showcase Nestor's expertise in **data conversions**, **ETL automation**, and **SaaS FP&A support**
-- Provide direct contact paths (WhatsApp, LinkedIn) — no contact forms
-- ATS-friendly CV download
-- Fast, accessible, SEO-friendly static site
-- Git-versioned for easy updates
-
----
-
-## 📝 License
-
-Personal portfolio — all rights reserved.
-
----
-
-**Built with** ❤️ **by Nelson (OpenClaw AI Assistant)**
+Deploy: see `DEPLOY.md`.

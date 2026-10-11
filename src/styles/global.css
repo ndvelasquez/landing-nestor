@@ -1,0 +1,171 @@
+/* Global base. Values come from tokens.css only. */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--space-6);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  background: var(--color-ground);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection { background: var(--color-mark); color: var(--color-mark-ink); }
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2.5px; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: var(--space-1); border-radius: var(--radius-focus); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-wrap: balance;
+}
+p, li, dd { text-wrap: pretty; }
+
+code {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.94em;
+  background: var(--color-card);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+  padding: 0 0.3em;
+  white-space: nowrap;
+}
+
+/* Tabular figures only on the numbers, not on labels ("set , 25" bug). */
+td { font-variant-numeric: tabular-nums; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute; left: var(--space-4); top: -100px;
+  background: var(--color-ink); color: var(--color-ground);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-pill);
+  z-index: 10; font-weight: 600;
+}
+.skip:focus { top: var(--space-4); }
+
+/* Width container */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Signature gesture: the evidence mark ---------- */
+.mark {
+  background-color: var(--color-mark);
+  color: var(--color-mark-ink);
+  border-radius: var(--radius-mark);
+  padding: 0 0.12em;
+  margin: 0 -0.04em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 26px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-ink);
+  font-weight: 600;
+  font-size: var(--type-body-sm);
+  line-height: var(--leading-snug);
+  text-decoration: none;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
+}
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn-primary { background: var(--color-ink); color: var(--color-ground); }
+.btn-primary:hover { background: var(--color-ink-2); border-color: var(--color-ink-2); }
+.btn-ghost { background: transparent; color: var(--color-ink); }
+.btn-ghost:hover { background: var(--color-mark); }
+.on-field .btn-ghost:hover { background: var(--color-card); }
+
+/* ---------- Text link with arrow ---------- */
+.arrow-link {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.arrow-link svg { width: 18px; height: 18px; transition: transform 160ms ease-out; }
+.arrow-link:hover svg { transform: translateX(3px); }
+
+/* ---------- Shared bits ---------- */
+.h2 {
+  font-size: var(--type-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+}
+.lead { font-size: var(--type-lead); line-height: var(--leading-relaxed); }
+.muted { color: var(--color-ink-2); }
+
+/* Dash list: a short ink rule instead of bullets */
+.dash-list { list-style: none; padding: 0; display: grid; gap: var(--space-2); }
+.dash-list li { position: relative; padding-left: 26px; }
+.dash-list li::before {
+  content: ""; position: absolute; left: 0; top: 0.78em;
+  width: 14px; height: 1.5px; background: var(--color-ink);
+}
+
+/* White data card sitting on the lime field */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* Data table inside a card */
+.data-table { width: 100%; border-collapse: collapse; font-size: var(--type-body-sm); line-height: var(--leading-compact); }
+.data-table caption { text-align: left; }
+.data-table th, .data-table td {
+  text-align: left; padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-rule); vertical-align: top;
+}
+.data-table thead th { border-top: 0; font-weight: 600; font-size: var(--type-label); color: var(--color-ink-2); padding-top: var(--space-4); }
+.data-table tbody th { font-weight: 400; }
+.data-table td { font-weight: 600; white-space: nowrap; }
+.data-table td.wrap-ok { white-space: normal; }
+
+/* In tight display headings (line-height < 1) a full-size inline background is
+   taller than the line box: each line's mark would cover the descenders of the
+   line above and the fragments would fuse into one block. In headings the mark
+   is a smaller inline box (its background spans roughly cap height to just
+   under the baseline) and the inner span restores the text size. Result: a
+   solid fill, one irregular shape per line (box-decoration-break: clone), and
+   the line above stays readable. Markup: <span class="mark"><span>…</span></span>. */
+h1 .mark, h2 .mark {
+  font-size: 0.74em;
+  padding: 0 0.16em;
+  margin: 0 -0.06em;
+}
+h1 .mark > span, h2 .mark > span { font-size: calc(1em / 0.74); }

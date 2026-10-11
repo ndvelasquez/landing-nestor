@@ -1,0 +1,162 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, ogType = 'website', jsonLd } = Astro.props;
+
+// Absolute URLs only when a site URL is configured in astro.config.mjs
+// (pending: the Vercel URL). Without it, canonical/og:url/og:image are omitted
+// rather than emitted with a wrong host.
+const site = Astro.site;
+const canonical = site ? new URL(Astro.url.pathname, site).href : undefined;
+const ogImage = site ? new URL('/og.png', site).href : undefined;
+
+const email = 'ndvelasquezl@gmail.com';
+const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const home = isHome ? '' : '/';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta name="author" content="Nestor Velasquez" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Nestor Velasquez" />
+    <meta property="og:locale" content="en_US" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Gloock&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+    />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header-inner">
+        <p class="id">
+          <a class="id-name" href={isHome ? '#top' : '/'}>Nestor Velasquez</a>
+          <span class="id-what">Zendesk support ops · SaaS and ecommerce</span>
+        </p>
+        <nav class="site-nav" aria-label="Main">
+          <a class="nav-wide" href={`${home}#offers`}>Offers</a>
+          <a class="nav-wide" href={isHome ? '#demo' : '/work/ai-ticket-triage'}>Demo</a>
+          <a class="nav-wide" href={`${home}#about`}>About</a>
+          <a class="nav-contact" href={`mailto:${email}?subject=Zendesk%20problem`}>Email me</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p><strong>Nestor Velasquez</strong> · Zendesk support ops · SaaS and ecommerce</p>
+        <ul class="footer-links">
+          <li><a href={`mailto:${email}`}>{email}</a></li>
+          <li><a href={linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
+          <li><a href="/Nestor_Velasquez_CV.pdf" download>Download CV (PDF)</a></li>
+          <li>© 2026</li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 5;
+  }
+  .site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--header-h);
+    padding-inline: var(--gutter);
+  }
+  .id { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-4); row-gap: 0; }
+  .id-name {
+    font-weight: 700;
+    font-size: var(--type-body);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .id-what { font-size: var(--type-label); color: var(--color-ink-2); }
+  .site-nav { display: flex; align-items: center; gap: var(--space-2); }
+  .site-nav a {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--space-3);
+    font-size: var(--type-small);
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: var(--radius-pill);
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav .nav-contact {
+    border: 1.5px solid var(--color-ink);
+    padding: 0 var(--space-4);
+    font-weight: 600;
+    margin-left: var(--space-2);
+  }
+  .site-nav .nav-contact:hover { background: var(--color-ink); color: var(--color-ground); text-decoration: none; }
+
+  /* The descriptor sits over ground; the nav sits over the lime field at desktop. */
+  @media (max-width: 1100px) {
+    .nav-wide { display: none !important; }
+  }
+  @media (max-width: 900px) {
+    .id { flex-direction: column; align-items: flex-start; padding-block: var(--space-2); }
+    .id-what { margin-top: calc(-1 * var(--space-2)); }
+    .id-what { font-size: var(--type-label); }
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--color-rule);
+    padding-block: var(--space-6) var(--space-7);
+    font-size: var(--type-small);
+  }
+  .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); align-items: center; }
+  .footer-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); align-items: center; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
+</style>

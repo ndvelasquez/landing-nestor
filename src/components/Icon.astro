@@ -1,0 +1,14 @@
+---
+// Authored inline SVG icons, one stroke weight (1.75). No icon font, no emoji (AG-05).
+interface Props { name: 'arrow' | 'mail' | 'linkedin'; }
+const { name } = Astro.props;
+---
+{name === 'arrow' && (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+)}
+{name === 'mail' && (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+)}
+{name === 'linkedin' && (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-1 1.83-1.75 3.52-1.75 3.77 0 4.13 2.3 4.13 5.3v5.95h-4v-5.27c0-1.26-.02-2.88-1.75-2.88-1.76 0-2.03 1.37-2.03 2.79v5.36h-4v-11Z" /></svg>
+)}

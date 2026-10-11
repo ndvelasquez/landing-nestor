@@ -1,312 +1,471 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Site from '../layouts/Site.astro';
+import EvidenceCard from '../components/EvidenceCard.astro';
+import Icon from '../components/Icon.astro';
+
+const email = 'ndvelasquezl@gmail.com';
+const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
+const mailProblem = `mailto:${email}?subject=Zendesk%20problem`;
+
+const title = 'Nestor Velasquez | Zendesk Support Ops Automation';
+const description =
+  'I fix Zendesk routing, SLA rules and macros for SaaS and ecommerce support teams. Fixed price from $250, tested and documented. English and Spanish.';
+
+// Structured data: only verifiable facts. No reviews, ratings, address or clients.
+const personId = new URL('/#nestor', Astro.site).href;
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: 'Nestor Velasquez',
+  jobTitle: 'Zendesk Support Ops Automation',
+  email: `mailto:${email}`,
+  sameAs: [linkedin],
+  knowsLanguage: ['en', 'es'],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    email,
+    availableLanguage: ['en', 'es'],
+  },
+  knowsAbout: ['Zendesk', 'Ticket routing', 'SLA policies', 'Macros', 'n8n', 'Zapier', 'REST APIs', 'Webhooks'],
+};
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    person,
+    {
+      '@type': 'Service',
+      name: 'Zendesk Support Ops Automation',
+      serviceType: 'Zendesk routing, SLA rules and macros',
+      description,
+      provider: { '@id': personId },
+      audience: { '@type': 'BusinessAudience', name: 'SaaS and ecommerce support teams' },
+      // Service takes `offers` (makesOffer belongs to Person/Organization).
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Helpdesk Workflow Repair',
+          description: 'One Zendesk routing or escalation workflow, built, tested and documented. Up to 6 hours, about one week.',
+          priceSpecification: { '@type': 'PriceSpecification', minPrice: 250, priceCurrency: 'USD' },
+        },
+        {
+          '@type': 'Offer',
+          name: 'Ticket Triage Pilot',
+          description: 'Ticket classification by intent, priority and language with routing decided by rules in code. Up to 10-12 hours, about two weeks.',
+          priceSpecification: { '@type': 'PriceSpecification', minPrice: 550, priceCurrency: 'USD' },
+        },
+      ],
+    },
+  ],
+};
 ---
-
-<BaseLayout title="Nestor Velasquez | Digital Curator & Developer">
-  <!-- Top Navigation Bar -->
-  <nav class="fixed top-0 w-full z-50 bg-surface/50 dark:bg-[#131313]/50 backdrop-blur-xl shadow-[0_0_40px_-5px_rgba(68,216,241,0.08)]">
-    <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-      <div class="text-xl font-bold tracking-tighter text-[#e5e2e1] font-headline">
-        Nestor Velasquez
+<Site title={title} description={description} jsonLd={jsonLd}>
+  <!-- HERO: copy on ground, evidence on the lime field (bleeds right) -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="hero-title">I fix Zendesk <span class="mark"><span>routing, SLA rules and macros</span></span> for SaaS and ecommerce support teams.</h1>
+    <div class="hero-copy">
+      <p class="hero-sub">Send me the ticket problem your team keeps working around. We agree on one fix, I build and test it at a fixed price, and you get it documented so your team can maintain it.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href={mailProblem}><Icon name="mail" />Email me the problem</a>
+        <a class="btn btn-ghost" href="/work/ai-ticket-triage">See the triage demo</a>
       </div>
-      <div class="hidden md:flex items-center space-x-8">
-        <a class="font-manrope tracking-tight text-sm font-medium text-[#44d8f1] border-b-2 border-[#44d8f1] pb-1" href="#hero">Hero</a>
-        <a class="font-manrope tracking-tight text-sm font-medium text-[#e5e2e1]/70 hover:text-[#44d8f1] transition-colors duration-300" href="#about">About</a>
-        <a class="font-manrope tracking-tight text-sm font-medium text-[#e5e2e1]/70 hover:text-[#44d8f1] transition-colors duration-300" href="#skills">Skills</a>
-        <a class="font-manrope tracking-tight text-sm font-medium text-[#e5e2e1]/70 hover:text-[#44d8f1] transition-colors duration-300" href="#projects">Projects</a>
-        <a class="font-manrope tracking-tight text-sm font-medium text-[#e5e2e1]/70 hover:text-[#44d8f1] transition-colors duration-300" href="#contact">Contact</a>
-      </div>
-      <a href="#contact">
-        <button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed px-5 py-2 rounded-DEFAULT font-medium text-sm hover:shadow-[0_0_15px_rgba(68,216,241,0.3)] transition-all duration-300 scale-95 active:scale-90">
-          Get in Touch
-        </button>
-      </a>
+      <p class="hero-price"><strong class="nowrap">Fixed price, from $250</strong> · <span class="nowrap">English and Spanish</span></p>
     </div>
-  </nav>
+    <div class="hero-field on-field">
+      <EvidenceCard />
+    </div>
+  </section>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 mesh-gradient" id="hero">
-      <div class="max-w-7xl mx-auto px-8 w-full relative z-10">
-        <div class="max-w-3xl">
-          <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-primary-fixed mb-6">
-            Digital Curator <br/>
-            <span class="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent opacity-90">& Developer</span>
-          </h1>
-          <p class="text-xl md:text-2xl text-on-surface-variant font-light mb-10 max-w-xl">
-            Crafting modern digital experiences with precision and intentional asymmetry.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a class="bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed px-8 py-4 rounded-DEFAULT font-bold tracking-tight hover:shadow-[0_0_25px_rgba(68,216,241,0.4)] transition-all duration-300 transform hover:-translate-y-1" href="#projects">
-              View My Work
-            </a>
-            <a class="px-8 py-4 rounded-DEFAULT border border-outline-variant/30 backdrop-blur-sm text-on-surface hover:bg-surface-container-highest/20 transition-all duration-300" href="#about">
-              Learn More
-            </a>
+  <!-- PROBLEM: quiet section, heading in the margin, queue rows -->
+  <section class="problem" aria-labelledby="problem-title">
+    <div class="wrap problem-grid">
+      <h2 id="problem-title" class="h2 problem-h">Where the queue breaks</h2>
+      <div>
+        <dl class="queue">
+          <div class="queue-row">
+            <dt>Routing</dt>
+            <dd>A billing question lands in the technical queue. An agent moves it by hand, and the SLA clock keeps running while it waits.</dd>
           </div>
+          <div class="queue-row">
+            <dt>SLA</dt>
+            <dd>First-response breaches pile up in the afternoon, and nobody knows if the cause is the schedule, the priority rules or the assignment.</dd>
+          </div>
+          <div class="queue-row">
+            <dt>Macros</dt>
+            <dd>There are more macros than anyone uses, some are out of date, and agents still rewrite the same reply.</dd>
+          </div>
+          <div class="queue-row">
+            <dt>Manual triage</dt>
+            <dd>Someone reads every new ticket to tag it and pick a queue, and that holds up until volume grows.</dd>
+          </div>
+        </dl>
+        <p class="problem-close">Often the fix sits inside the Zendesk you already pay for: a trigger, a view, an SLA policy or a macro set up wrong.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFERS: heading row, two columns split by a hairline -->
+  <section class="offers" id="offers" aria-labelledby="offers-title">
+    <div class="wrap">
+      <div class="offers-head">
+        <h2 id="offers-title" class="h2">Two fixed-price offers</h2>
+        <p class="offers-intro">Intro prices for my first three clients.</p>
+      </div>
+
+      <div class="offers-grid">
+        <article class="offer">
+          <h3 class="offer-name">Helpdesk Workflow Repair</h3>
+          <p class="offer-price">Fixed price, <span class="mark nowrap">from $250</span></p>
+          <p class="offer-for">For one routing or escalation problem you can name.</p>
+          <ul class="dash-list offer-list">
+            <li>A focused review of the triggers, views, macros and SLA rules involved</li>
+            <li>One routing or escalation workflow, built and tested against pass/fail checks we agree first</li>
+            <li>Up to three supporting macros or views</li>
+            <li>A recorded walkthrough and handover notes</li>
+            <li>One round of revisions</li>
+          </ul>
+          <p class="offer-scope">One Zendesk instance, up to 6 hours of work including testing and documentation. About one week from access to handover. If the problem doesn't fit in 6 hours, I tell you before we start and we adjust the scope.</p>
+        </article>
+
+        <article class="offer">
+          <h3 class="offer-name">Ticket Triage Pilot</h3>
+          <p class="offer-price">Fixed price, <span class="mark nowrap">from $550</span></p>
+          <p class="offer-for">For teams whose ticket categories don't fit native Zendesk rules or built-in AI.</p>
+          <ul class="dash-list offer-list">
+            <li>New tickets classified by intent, priority and language, using your own list of up to 8 categories</li>
+            <li>Tags and routing decided by rules in code, plus a Slack alert for the tickets you define as urgent</li>
+            <li>Tickets the flow is unsure about go to a person</li>
+            <li>An accuracy check on a redacted sample of your tickets, with pass criteria agreed before we start</li>
+            <li>Documentation and a walkthrough</li>
+          </ul>
+          <p class="offer-scope">One helpdesk, one Slack channel, up to 10-12 hours of work, about two weeks. Built with n8n or Zapier and an LLM API (you pay the API costs). There's no accuracy guarantee, and if native rules are enough for your case, I'll say so before you buy this.</p>
+        </article>
+      </div>
+
+      <p class="offers-note">Not included: chatbots, chat or messaging integrations, migrations, ongoing monitoring, and software or API costs.</p>
+    </div>
+  </section>
+
+  <!-- DEMO: field switches to the left and holds the numbers + caveats -->
+  <section class="demo" id="demo" aria-labelledby="demo-title">
+    <div class="demo-field on-field">
+      <div class="card demo-card">
+        <p class="demo-label">Synthetic demo, not a client project. Every ticket is invented.</p>
+        <table class="data-table">
+          <caption class="visually-hidden">Triage demo results on the held-out set</caption>
+          <thead>
+            <tr><th scope="col">Held-out set, 25 tickets</th><th scope="col">Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Auto-routed tickets with the right category</th><td>17 of 17</td></tr>
+            <tr><th scope="row">Sent to human review</th><td>8 of 25 (32%)</td></tr>
+            <tr><th scope="row">Wrong categories that reached a team unreviewed</th><td class="wrap-ok">0 <span class="td-note">(the previous version let 1 through)</span></td></tr>
+            <tr><th scope="row">Injected instructions followed</th><td>0 of 2</td></tr>
+            <tr><th scope="row">Priority correct</th><td>23 of 25</td></tr>
+          </tbody>
+        </table>
+        <p class="demo-caveats">The difference between versions is one ticket. 7 of the 8 tickets sent to review already had the right category, so the flow over-escalates. The priority misses were not caught by any check. Results vary between runs, each number is one run, and the labels are mine.</p>
+      </div>
+    </div>
+    <div class="demo-copy">
+      <h2 id="demo-title" class="h2">The triage demo: results and caveats</h2>
+      <p>I built a triage flow in n8n and tested it on tickets I wrote myself. The held-out set has 25 tickets, written before any run and used once per version with the prompt frozen.</p>
+      <p class="demo-rule"><strong><span class="mark">The model proposes, the code decides.</span></strong> The model suggests a category and has to quote the sentence in the ticket that supports it. Code checks that the quote appears in the ticket, checks the confidence and whether a second category fits, and picks the queue itself. If anything looks off, the ticket goes to a person.</p>
+      <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <!-- HOW: heading alone, then the sequence as a row -->
+  <section class="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title" class="h2 how-h">How a project runs</h2>
+      <ol class="steps">
+        <li>
+          <h3>You send me the problem.</h3>
+          <p>Your Zendesk plan, roughly how many tickets you get a month, and what is breaking. I reply within one business day.</p>
+        </li>
+        <li>
+          <h3>I send a one-page scope.</h3>
+          <p>The problem, what I'll deliver, the pass/fail tests, the price and the delivery date. If it doesn't fit the offer, I tell you then.</p>
+        </li>
+        <li>
+          <h3>I work in a sandbox or with temporary access.</h3>
+          <p>A sandbox where you have one. Otherwise named, temporary access with the minimum permissions, or a screen-share where you drive. Nothing changes in production without your approval and a rollback plan.</p>
+        </li>
+        <li>
+          <h3>I hand it over.</h3>
+          <p>A recorded walkthrough, written notes, and one consolidated round of revisions.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ABOUT: offset reading column -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div class="about-col">
+        <h2 id="about-title" class="about-h">About me</h2>
+        <p class="lead">I'm Nestor Velasquez. I've spent 6+ years in L2/L3 technical support for B2B SaaS and API-based platforms, so I know the queue from the agent's side.</p>
+        <p>I've administered Zendesk (macros, views, SLA policies and auto-assignment), troubleshot REST APIs and webhooks with Postman and SQL, and built automations in Zapier and n8n. In one role I supported 200+ enterprise accounts and built automations that cut manual support effort by about 70%. In L3 incident work I handled around 40 critical incidents a month at 100% SLA compliance.</p>
+        <p>I work in English and Spanish.</p>
+        <p class="about-cv"><a href="/Nestor_Velasquez_CV.pdf" download>Download CV (PDF)</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ: heading in the margin, questions as a list -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <h2 id="faq-title" class="h2 faq-h">FAQ</h2>
+      <div class="faq-list">
+        <div class="qa">
+          <h3>Zendesk already has triggers and its own AI triage. Why would I need you?</h3>
+          <p>Maybe you don't. If a native trigger, an SLA policy or Zendesk's own triage covers your case, I'll tell you and show you where to set it up. A custom flow makes sense when you need your own categories, context from another system, or tighter control over cost, or when you don't have the built-in option.</p>
+        </div>
+        <div class="qa">
+          <h3>Do I have to give you admin access to production?</h3>
+          <p>No. A sandbox or a screen-share where you drive both work. If we change production, I only touch what we agreed, with your approval and a rollback plan.</p>
+        </div>
+        <div class="qa">
+          <h3>What if the work takes more than 6 hours?</h3>
+          <p>I check that before we start. If it doesn't fit, I'll adjust the scope with you or tell you it isn't a good fit. Anything extra needs a separate quote you approve first.</p>
+        </div>
+        <div class="qa">
+          <h3>Will this cut our response time by a certain percentage?</h3>
+          <p>I can't promise a number before I see your queue. We agree what "working" means as pass/fail tests, and I build to those.</p>
+        </div>
+        <div class="qa">
+          <h3>Do you work with Freshdesk, Gorgias or HubSpot?</h3>
+          <p>Zendesk only for now.</p>
+        </div>
+        <div class="qa">
+          <h3>How do I pay?</h3>
+          <p>Through Upwork, Contra, or directly by invoice. Same fixed price either way.</p>
         </div>
       </div>
-      <!-- Asymmetric Decoration -->
-      <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-2/3 opacity-20 pointer-events-none">
-        <div class="w-full h-full bg-primary/20 blur-[120px] rounded-full translate-x-1/2"></div>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About Section -->
-    <section class="py-32 bg-surface-container-low" id="about">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
-          <div class="md:col-span-5 relative">
-            <div class="aspect-[4/5] bg-surface-container-high rounded-lg overflow-hidden glass-card">
-              <img 
-                alt="Nestor Velasquez portrait" 
-                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" 
-                src="https://lh3.googleusercontent.com/aida/AB6AXuAmYFqDa0YJmEuITpCimon8VkZiql6vgEba0OruLaV4RhWfXIbhuvwS9LPmSQe6IEp-38j6kS0TEBQCnEyBPHTvYmLF5CU5r7JjNKOgRUhcHPvoD98yKxBi8JQ02f22VuEq6XYpRVopI8sJ42jqfA9fmzKP_fqU4jdxnLc3rt-ZTuOteYW-65Jecj69-wE6UmT5GOScBYdVXixQ5xvbXVB7uqJhJ7Gxp92RIt8ov1mbnDYLlBzzegvgg07YYpK5sPeKXSVyXF7SPA"
-              />
-            </div>
-            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 backdrop-blur-xl border border-primary/20 flex items-center justify-center p-4">
-              <span class="text-primary font-black text-4xl">08+</span>
-            </div>
-          </div>
-          <div class="md:col-span-7">
-            <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-secondary mb-4">About the Curator</h2>
-            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface mb-8">Engineering Artistry in Code.</h3>
-            <div class="space-y-6 text-lg text-on-surface-variant font-light leading-relaxed">
-              <p>
-                I specialize in building digital architectures that don't just function—they resonate. By bridging the gap between high-end UI/UX design and scalable engineering, I create environments where performance meets aesthetic excellence.
-              </p>
-              <p>
-                My approach is rooted in the "No-Line" philosophy, using depth, light, and motion to define boundaries rather than rigid grids. Every pixel is an intentional choice in a larger narrative of digital sophistication.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section class="py-32 bg-surface" id="skills">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-          <div class="max-w-2xl">
-            <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-tertiary mb-4">Technical Arsenal</h2>
-            <h3 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface">The Tools of Precision.</h3>
-          </div>
-          <div class="text-on-surface-variant text-right max-w-xs font-light italic">
-            "Precision is the difference between a tool and an instrument."
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-12">
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">JavaScript / TypeScript</span>
-              <span class="text-primary">95%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[95%]"></div>
-            </div>
-          </div>
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">React / Next.js</span>
-              <span class="text-primary">92%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[92%]"></div>
-            </div>
-          </div>
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">Tailwind CSS</span>
-              <span class="text-primary">98%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[98%]"></div>
-            </div>
-          </div>
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">UI/UX Design</span>
-              <span class="text-primary">88%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[88%]"></div>
-            </div>
-          </div>
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">Node.js / Express</span>
-              <span class="text-primary">90%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[90%]"></div>
-            </div>
-          </div>
-          <!-- Skill Item -->
-          <div class="space-y-4">
-            <div class="flex justify-between items-center text-sm font-bold tracking-tight uppercase">
-              <span class="text-on-surface">Automation (n8n, Make)</span>
-              <span class="text-primary">85%</span>
-            </div>
-            <div class="h-[2px] w-full bg-surface-container-highest relative">
-              <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container shadow-[0_0_15px_rgba(68,216,241,0.5)] w-[85%]"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects Section (Bento Grid Style) -->
-    <section class="py-32 bg-surface-container-lowest" id="projects">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="text-center mb-20">
-          <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-primary mb-4">Curated Exhibition</h2>
-          <h3 class="text-4xl md:text-6xl font-extrabold tracking-tighter text-on-surface">Selected Projects</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <!-- Project 1 (Large) -->
-          <div class="md:col-span-8 group relative aspect-video md:aspect-auto md:h-[600px] overflow-hidden rounded-lg bg-surface-container-high">
-            <img 
-              alt="AI Automation Platform" 
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCJ5uuOBLRJMUSE3tDf0Shl0kzNNMgjpZ6PRlPCgrexF1qSrY4N9h0vMGkF5QECxwvja1pHB50x7Hz_Nnsm0y7paccZgDrgFqSzhMSvbUs0Qb-GEfreAkW58ZtGIr1sGs-F-hTUnP-7SnpJAiVWUjCej--XfcPtEDtWKobIwAvIyAGWTajXgLilQRDttUnaO70Y7JxgzSOI--9JbZOS463SHzPVStaLLcXwwmvuQmba-QOCQ2I1Q_BxcJWR0UcY6ZJP4Jqcgr06A"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-90"></div>
-            <div class="absolute bottom-0 left-0 p-10">
-              <div class="flex gap-2 mb-4">
-                <span class="px-3 py-1 rounded-full bg-secondary-container/20 text-secondary text-xs font-bold border border-secondary/20 uppercase tracking-widest">AI / ML</span>
-                <span class="px-3 py-1 rounded-full bg-primary-container/20 text-primary text-xs font-bold border border-primary/20 uppercase tracking-widest">Automation</span>
-              </div>
-              <h4 class="text-3xl font-bold text-on-surface mb-2">AI Automation Platform</h4>
-              <p class="text-on-surface-variant font-light max-w-md">Intelligent workflow automation with real-time analytics and neural pattern recognition.</p>
-            </div>
-            <div class="absolute top-10 right-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span class="material-symbols-outlined text-primary text-4xl">arrow_outward</span>
-            </div>
-          </div>
-          <!-- Project 2 (Small) -->
-          <div class="md:col-span-4 group relative overflow-hidden rounded-lg bg-surface-container-high h-[600px]">
-            <img 
-              alt="Landing Page Generator" 
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxOVBOS4P6402IpWgQNdV7unEuIAMmXfHHnlrTa_fLFgya7Z1fSv2YpoDHg-ndlAXwPMW1mbHXcQCtuGz2hQCAfMFuriTfEB4gMdbR0dxcRdsleXR9q8Lp8Gk93Br44OUY0v9bUTQPfHtOo8ole6Pr743zaBp0B5IGEV46F2_sJGaXaX6ZQuxU7WkC2J-ZNdRT39-IoYEh08A8mwKuQ6yRZ-qI8001Bk4PkK8NI-0SjycQOmOt_s8NpaurL8uCfqg8tyeyKnlSuA"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-90"></div>
-            <div class="absolute bottom-0 left-0 p-8">
-              <div class="flex gap-2 mb-4">
-                <span class="px-3 py-1 rounded-full bg-tertiary-container/20 text-tertiary text-xs font-bold border border-tertiary/20 uppercase tracking-widest">Web Dev</span>
-              </div>
-              <h4 class="text-2xl font-bold text-on-surface mb-2">Landing Page Generator</h4>
-              <p class="text-on-surface-variant font-light text-sm">AI-powered landing page creation with Stitch MCP and modern design systems.</p>
-            </div>
-          </div>
-          <!-- Project 3 (Medium) -->
-          <div class="md:col-span-12 group relative h-[400px] overflow-hidden rounded-lg bg-surface-container-high">
-            <img 
-              alt="Content Automation System" 
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-40" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRM3c2KlgiXHFv0tEmBurrLRsxP9YXeodfDfnrh9hORIYoZ4kmN5UmxnS65Fi4_slZG7FkORsxOoMNdYxRRYxV8WTjFypYNEY80UtsrySqABy2hiGcJzBU8_NfECqiMZe0mDd2IeByb8TLndQKZ4-7_hDlXLiZSfgOCV59EcwsPVRm0FC4mORnJwmrDcC_uhu_adfHDYMgRM6qx1ZFR6pBJCF1uedyYHAiT4EEAlpJImMoBK9Y_WY1lbO6lpgu8k489jd_YwpYDQ"
-            />
-            <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent"></div>
-            <div class="absolute inset-y-0 left-0 p-12 flex flex-col justify-center">
-              <div class="flex gap-2 mb-4">
-                <span class="px-3 py-1 rounded-full bg-primary-container/20 text-primary text-xs font-bold border border-primary/20 uppercase tracking-widest">Content</span>
-                <span class="px-3 py-1 rounded-full bg-secondary-container/20 text-secondary text-xs font-bold border border-secondary/20 uppercase tracking-widest">Automation</span>
-              </div>
-              <h4 class="text-4xl font-bold text-on-surface mb-2">Content Automation System</h4>
-              <p class="text-on-surface-variant font-light max-w-xl">Multi-platform content generation and scheduling with LinkedIn, Notion, and n8n integration.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="py-32 bg-surface mesh-gradient" id="contact">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+  <!-- CONTACT: the field returns at page scale -->
+  <section class="contact on-field" id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact-grid">
+      <h2 id="contact-title" class="contact-h">Send me the problem</h2>
+      <div class="contact-body">
+        <p class="lead">Email me which Zendesk plan you're on, roughly how many tickets you get a month, and the one thing in the queue you'd fix first. I'll reply with what I'd look at first and whether it fits the fixed-price repair. You can write in English or Spanish.</p>
+        <dl class="contact-list">
           <div>
-            <h2 class="text-sm font-bold tracking-[0.2em] uppercase text-primary mb-4">Inquiry</h2>
-            <h3 class="text-5xl font-extrabold tracking-tighter text-on-surface mb-8">Let's build <br/>something legendary.</h3>
-            <p class="text-on-surface-variant text-xl font-light mb-12">
-              Currently accepting select freelance projects and collaborative inquiries for 2026.
-            </p>
-            <div class="space-y-6">
-              <div class="flex items-center gap-4 text-on-surface">
-                <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/20">
-                  <span class="material-symbols-outlined text-primary">mail</span>
-                </div>
-                <span class="text-lg font-medium">ndvelasquezl@gmail.com</span>
-              </div>
-              <div class="flex items-center gap-4 text-on-surface">
-                <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/20">
-                  <span class="material-symbols-outlined text-primary">location_on</span>
-                </div>
-                <span class="text-lg font-medium">Remote / Global</span>
-              </div>
-            </div>
+            <dt>Email</dt>
+            <dd><a class="contact-email" href={mailProblem}>{email}</a></dd>
           </div>
-          <div class="bg-surface-container-low p-8 md:p-12 rounded-lg border border-outline-variant/10 shadow-2xl">
-            <form action="#" class="space-y-6">
-              <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Your Name</label>
-                <input class="w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-primary/40 text-on-surface py-4 px-4 rounded-DEFAULT transition-all" placeholder="Enter your name" type="text"/>
-              </div>
-              <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Email Address</label>
-                <input class="w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-primary/40 text-on-surface py-4 px-4 rounded-DEFAULT transition-all" placeholder="name@company.com" type="email"/>
-              </div>
-              <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Project Details</label>
-                <textarea class="w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-primary/40 text-on-surface py-4 px-4 rounded-DEFAULT transition-all" placeholder="Tell me about your vision..." rows="4"></textarea>
-              </div>
-              <button class="w-full bg-primary text-on-primary-fixed font-bold py-5 rounded-DEFAULT shadow-[0_10px_30px_-10px_rgba(68,216,241,0.3)] hover:shadow-[0_15px_40px_-10px_rgba(68,216,241,0.5)] transition-all transform hover:-translate-y-1" type="submit">
-                Send Message
-              </button>
-            </form>
+          <div>
+            <dt>LinkedIn</dt>
+            <dd><a class="contact-li" href={linkedin} rel="me noopener" target="_blank"><Icon name="linkedin" />linkedin.com/in/nestor-david-velasquez</a></dd>
           </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-[#0e0e0e] dark:bg-[#0e0e0e] w-full border-t border-[#3c494c]/20">
-    <div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 w-full max-w-7xl mx-auto">
-      <div class="mb-6 md:mb-0">
-        <div class="text-lg font-black text-[#44d8f1] mb-2 font-headline">Nestor Velasquez</div>
-        <p class="font-manrope text-xs tracking-wide uppercase text-[#e5e2e1]/50">
-          © 2026 Digital Curator. Engineered with Precision.
-        </p>
-      </div>
-      <div class="flex flex-wrap justify-center gap-8">
-        <a class="font-manrope text-xs tracking-wide uppercase text-[#e5e2e1]/50 hover:text-[#70d8c8] hover:translate-y-[-2px] transition-all duration-200" href="https://www.linkedin.com/in/nestor-david-velasquez/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a class="font-manrope text-xs tracking-wide uppercase text-[#e5e2e1]/50 hover:text-[#70d8c8] hover:translate-y-[-2px] transition-all duration-200" href="https://github.com/ndvelasquez" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a class="font-manrope text-xs tracking-wide uppercase text-[#e5e2e1]/50 hover:text-[#70d8c8] hover:translate-y-[-2px] transition-all duration-200" href="#" target="_blank" rel="noopener noreferrer">Portfolio</a>
+        </dl>
       </div>
     </div>
-  </footer>
+  </section>
+</Site>
 
-  <style>
-    body {
-      background-color: #131313;
-      color: #e5e2e1;
-      font-family: 'Manrope', sans-serif;
-      scroll-behavior: smooth;
+<style>
+  .nowrap { white-space: nowrap; }
+
+  /* ---------------- HERO ---------------- */
+  /* Title, copy and field are siblings so the field can sit between the
+     title and the copy on small screens (artifact in the first viewport, OB-01). */
+  .hero {
+    display: grid;
+    grid-template-columns: var(--split);
+    grid-template-rows: minmax(calc(var(--header-h) + var(--space-7)), 1fr) auto auto minmax(var(--space-8), 1fr);
+    grid-template-areas: ". field" "title field" "copy field" ". field";
+    min-height: min(100svh, 940px);
+  }
+  .hero-title {
+    grid-area: title;
+    padding-inline: var(--gutter);
+    font-size: var(--type-hero);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+  .hero-copy { grid-area: copy; padding-inline: var(--gutter); }
+  .hero-sub { margin-top: var(--space-6); font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 40ch; color: var(--color-ink-2); }
+  .hero-ctas { margin-top: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .hero-price {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-rule);
+    max-width: 46ch;
+    font-size: var(--type-small);
+    color: var(--color-ink-2);
+  }
+  .hero-price strong { color: var(--color-ink); font-weight: 600; }
+  .hero-title { max-width: calc(15ch + 2 * var(--gutter)); }
+  .hero-field {
+    grid-area: field;
+    background: var(--color-field);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + var(--space-6)) clamp(16px, 4vw, 64px) var(--space-8);
+  }
+
+  /* ---------------- PROBLEM ---------------- */
+  .problem { padding-block: var(--space-9) var(--rhythm-5); }
+  .problem-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
+  .problem-h { max-width: 9ch; position: sticky; top: var(--space-6); }
+  .queue { border-bottom: 1px solid var(--color-rule); }
+  .queue-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 3fr) minmax(0, 7fr);
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-rule);
+  }
+  .queue-row dt { font-family: var(--font-display); font-size: var(--type-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; }
+  .queue-row dd { margin: 0; max-width: 56ch; }
+  .problem-close { margin-top: var(--space-7); font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 48ch; }
+
+  /* ---------------- OFFERS ---------------- */
+  .offers { padding-block: var(--space-8) var(--space-9); border-top: 1px solid var(--color-rule); }
+  .offers-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-7); }
+  .offers-head .h2 { max-width: 14ch; }
+  .offers-intro { color: var(--color-ink-2); padding-bottom: 0.4em; }
+  .offers-grid { margin-top: var(--space-7); display: grid; grid-template-columns: 1fr 1fr; }
+  .offer { padding-block: var(--space-6) var(--space-2); }
+  .offer:first-child { padding-right: var(--space-7); }
+  .offer + .offer { padding-left: var(--space-7); border-left: 1px solid var(--color-rule); }
+  .offer-name { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; }
+  .offer-price { margin-top: var(--space-3); font-size: var(--type-price); font-weight: 600; letter-spacing: -0.01em; }
+  .offer-for { margin-top: var(--space-5); font-weight: 500; }
+  .offer-list { margin-top: var(--space-4); }
+  .offer-scope { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-rule); font-size: var(--type-small); color: var(--color-ink-2); max-width: 58ch; }
+  .offers-note { margin-top: var(--space-7); font-size: var(--type-small); color: var(--color-ink-2); }
+  .offers-note::before { content: ""; display: block; width: 48px; height: 1.5px; background: var(--color-ink); margin-bottom: var(--space-3); }
+
+  /* ---------------- DEMO ---------------- */
+  .demo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
+  .demo-field {
+    background: var(--color-field);
+    padding: var(--space-9) var(--space-7) var(--space-9) var(--gutter);
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+  .demo-card { width: 100%; max-width: 600px; margin-right: var(--card-overlap); position: relative; z-index: 1; }
+  .demo-label { padding: var(--space-4) var(--space-5); font-weight: 700; font-size: var(--type-small); border-bottom: 1px solid var(--color-rule); }
+  .td-note { display: block; font-weight: 400; color: var(--color-ink-2); font-size: var(--type-label); }
+  .demo-caveats { padding: var(--space-4) var(--space-5) var(--space-5); border-top: 1px solid var(--color-rule); font-size: var(--type-body-sm); line-height: var(--leading-relaxed); }
+  .demo-copy {
+    padding: var(--space-9) var(--gutter) var(--space-9) calc(var(--space-9) + var(--space-4));
+    display: flex; flex-direction: column; justify-content: center; gap: var(--space-5);
+    max-width: calc(560px + var(--gutter) + var(--space-9));
+  }
+  .demo-copy .h2 { max-width: 13ch; }
+  .demo-copy p { max-width: 54ch; }
+
+  /* ---------------- HOW ---------------- */
+  .how { padding-block: var(--rhythm-5) var(--space-8); }
+  .how-h { max-width: 16ch; }
+  .steps { list-style: none; padding: 0; margin-top: var(--space-7); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); counter-reset: step; }
+  .steps li { counter-increment: step; border-top: 1.5px solid var(--color-ink); padding-top: var(--space-4); }
+  .steps li::before {
+    content: counter(step);
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--type-numeral);
+    line-height: var(--leading-none);
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-4);
+  }
+  .steps h3 { font-size: var(--type-h3); line-height: var(--leading-snug); letter-spacing: -0.01em; }
+  .steps p { margin-top: var(--space-3); color: var(--color-ink-2); font-size: var(--type-body-sm); }
+
+  /* ---------------- ABOUT ---------------- */
+  .about { padding-block: var(--space-7) var(--rhythm-6); }
+  .about-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+  .about-col { grid-column: 2; max-width: var(--measure); display: grid; gap: var(--space-4); padding-top: var(--space-7); border-top: 1px solid var(--color-rule); }
+  .about-h { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+  .about .lead { font-size: var(--type-lead-lg); line-height: var(--leading-compact); }
+  .about-cv { font-size: var(--type-small); }
+  .about-cv a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+  /* ---------------- FAQ ---------------- */
+  .faq { padding-block: var(--space-8) var(--rhythm-2); border-top: 1px solid var(--color-rule); }
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
+  .faq-h { position: sticky; top: var(--space-6); }
+  .faq-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-6); }
+  .qa h3 { font-size: var(--type-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; }
+  .qa p { margin-top: var(--space-3); color: var(--color-ink-2); font-size: var(--type-body-sm); }
+
+  /* ---------------- CONTACT ---------------- */
+  .contact { background: var(--color-field); padding-block: var(--rhythm-7) var(--space-9); }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-7); align-items: end; }
+  .contact-h { font-size: var(--type-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display); max-width: 8ch; }
+  .contact-body .lead { max-width: 46ch; }
+  .contact-list { margin-top: var(--space-6); display: grid; gap: var(--space-4); }
+  .contact-list dt { font-size: var(--type-label); font-weight: 600; }
+  .contact-list dd { margin: 0; }
+  .contact-email {
+    display: inline-flex; align-items: center; min-height: 44px;
+    font-family: var(--font-display);
+    font-size: var(--type-h3-lg);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  .contact-li { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; font-weight: 600; overflow-wrap: anywhere; }
+  .contact-li :global(svg) { width: 18px; height: 18px; flex: none; }
+
+  /* ---------------- RESPONSIVE ---------------- */
+  @media (max-width: 1100px) {
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-7); }
+    .faq-list { grid-template-columns: 1fr; }
+    .demo-copy { padding-left: var(--space-8); }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      grid-template-areas: "title" "field" "copy";
+      min-height: 0;
     }
-    .mesh-gradient {
-      background: radial-gradient(at 0% 0%, rgba(0, 188, 212, 0.15) 0px, transparent 50%),
-                  radial-gradient(at 100% 100%, rgba(112, 216, 200, 0.1) 0px, transparent 50%);
-    }
-    .glass-card {
-      background: rgba(53, 53, 52, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(60, 73, 76, 0.1);
-    }
-  </style>
-</BaseLayout>
+    .hero-title { padding-top: calc(var(--header-h) + var(--space-6)); padding-bottom: var(--space-6); max-width: calc(17ch + 2 * var(--gutter)); }
+    .hero-field { padding: var(--space-6) var(--gutter) var(--space-6); }
+    .hero-copy { padding-top: var(--space-2); padding-bottom: var(--space-8); }
+
+    .problem { padding-block: var(--space-8) var(--space-8); }
+    .problem-grid, .faq-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+    .problem-h, .faq-h { position: static; max-width: none; }
+
+    .offers { padding-block: var(--rhythm-2) var(--space-8); }
+    .offers-grid { grid-template-columns: 1fr; }
+    .offer:first-child { padding-right: 0; }
+    .offer + .offer { padding-left: 0; border-left: 0; border-top: 1px solid var(--color-rule); margin-top: var(--space-6); padding-top: var(--space-7); }
+
+    .demo { grid-template-columns: 1fr; }
+    .demo-copy { order: -1; padding: var(--space-8) var(--gutter) var(--space-7); max-width: none; }
+    .demo-field { padding: var(--space-7) var(--gutter) var(--space-8); justify-content: flex-start; }
+    .demo-card { margin-right: 0; }
+
+    .how { padding-block: var(--rhythm-3) var(--space-7); }
+    .about { padding-block: var(--space-6) var(--rhythm-4); }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-col { grid-column: 1; }
+    .faq { padding-block: var(--rhythm-2) var(--rhythm-1); }
+    .contact { padding-block: var(--rhythm-5) var(--space-8); }
+    .contact-grid { grid-template-columns: 1fr; gap: var(--space-5); }
+  }
+
+  @media (max-width: 560px) {
+    .queue-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    .steps { grid-template-columns: 1fr; }
+    .data-table th, .data-table td { padding-inline: var(--space-4); }
+    .data-table td { white-space: normal; }
+    .demo-label, .demo-caveats { padding-inline: var(--space-4); }
+  }
+
+  @media (max-width: 420px) {
+    .hero-sub { font-size: var(--type-body); margin-top: var(--space-5); }
+    .hero-ctas { margin-top: var(--space-5); }
+    .hero-ctas .btn { flex: 1 1 100%; }
+    .hero-price { margin-top: var(--space-5); }
+  }
+</style>
