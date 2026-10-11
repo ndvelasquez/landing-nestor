@@ -87,6 +87,7 @@ const home = isHome ? '' : '/';
         <ul class="footer-links">
           <li><a href={`mailto:${email}`}>{email}</a></li>
           <li><a href={linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
+          <li><a href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Demo code on GitHub</a></li>
           <li><a href="/Nestor_Velasquez_CV.pdf" download>Download CV (PDF)</a></li>
           <li>© 2026</li>
         </ul>
@@ -115,7 +116,7 @@ const home = isHome ? '' : '/';
     font-size: var(--type-body);
     letter-spacing: -0.01em;
     text-decoration: none;
-    min-height: 44px;
+    min-height: var(--size-tap);
     display: inline-flex;
     align-items: center;
   }
@@ -125,7 +126,7 @@ const home = isHome ? '' : '/';
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: var(--size-tap);
     padding: 0 var(--space-3);
     font-size: var(--type-small);
     font-weight: 500;
@@ -158,5 +159,5 @@ const home = isHome ? '' : '/';
   }
   .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); align-items: center; }
   .footer-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); align-items: center; }
-  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: var(--size-tap); }
 </style>

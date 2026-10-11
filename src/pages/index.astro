@@ -171,7 +171,11 @@ const jsonLd = {
       <h2 id="demo-title" class="h2">The triage demo: results and caveats</h2>
       <p>I built a triage flow in n8n and tested it on tickets I wrote myself. The held-out set has 25 tickets, written before any run and used once per version with the prompt frozen.</p>
       <p class="demo-rule"><strong><span class="mark">The model proposes, the code decides.</span></strong> The model suggests a category and has to quote the sentence in the ticket that supports it. Code checks that the quote appears in the ticket, checks the confidence and whether a second category fits, and picks the queue itself. If anything looks off, the ticket goes to a person.</p>
-      <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
+      <div class="demo-links">
+        <a class="btn btn-primary" href="/work/ai-ticket-triage#try">Try it live</a>
+        <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
+        <a class="arrow-link" href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Code on GitHub</a>
+      </div>
     </div>
   </section>
 
@@ -360,6 +364,7 @@ const jsonLd = {
   }
   .demo-copy .h2 { max-width: 13ch; }
   .demo-copy p { max-width: 54ch; }
+  .demo-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
 
   /* ---------------- HOW ---------------- */
   .how { padding-block: var(--rhythm-5) var(--space-8); }
@@ -385,7 +390,7 @@ const jsonLd = {
   .about-h { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; margin-bottom: var(--space-2); }
   .about .lead { font-size: var(--type-lead-lg); line-height: var(--leading-compact); }
   .about-cv { font-size: var(--type-small); }
-  .about-cv a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+  .about-cv a { display: inline-flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
 
   /* ---------------- FAQ ---------------- */
   .faq { padding-block: var(--space-8) var(--rhythm-2); border-top: 1px solid var(--color-rule); }
@@ -404,13 +409,13 @@ const jsonLd = {
   .contact-list dt { font-size: var(--type-label); font-weight: 600; }
   .contact-list dd { margin: 0; }
   .contact-email {
-    display: inline-flex; align-items: center; min-height: 44px;
+    display: inline-flex; align-items: center; min-height: var(--size-tap);
     font-family: var(--font-display);
     font-size: var(--type-h3-lg);
     letter-spacing: -0.02em;
     overflow-wrap: anywhere;
   }
-  .contact-li { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; font-weight: 600; overflow-wrap: anywhere; }
+  .contact-li { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-tap); font-weight: 600; overflow-wrap: anywhere; }
   .contact-li :global(svg) { width: 18px; height: 18px; flex: none; }
 
   /* ---------------- RESPONSIVE ---------------- */

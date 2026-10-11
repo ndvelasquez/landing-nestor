@@ -29,7 +29,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 a { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: 0.2em; }
 a:hover { text-decoration-thickness: 2.5px; }
-:focus-visible { outline: 2px solid var(--color-focus); outline-offset: var(--space-1); border-radius: var(--radius-focus); }
+:focus-visible { outline: var(--border-focus) solid var(--color-focus); outline-offset: var(--space-1); border-radius: var(--radius-focus); }
 
 h1, h2, h3 {
   font-family: var(--font-display);
@@ -112,7 +112,7 @@ td { font-variant-numeric: tabular-nums; }
 /* ---------- Text link with arrow ---------- */
 .arrow-link {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  min-height: 44px;
+  min-height: var(--size-tap);
   font-weight: 600;
   text-decoration: underline;
 }

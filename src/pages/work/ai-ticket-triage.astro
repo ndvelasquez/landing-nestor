@@ -4,6 +4,12 @@ import Icon from '../../components/Icon.astro';
 
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
+const repo = 'https://github.com/ndvelasquez/n8n-ai-ticket-triage';
+
+// Literal test tickets from the demo repo (checked by tests/triage-core.test.mjs).
+import examples from '../../data/try-examples.json';
+const limits = { subject: 120, body: 1000 };
+const examplesJson = JSON.stringify(examples.map(({ id, subject, body }) => ({ id, subject, body }))).replace(/</g, '\\u003c');
 
 const title = 'AI ticket triage in n8n: a synthetic demo | Nestor';
 const description =
@@ -35,7 +41,8 @@ const jsonLd = {
           <li><code>gemini-3.5-flash-lite</code></li>
           <li>37 offline tests</li>
           <li>runs recorded 2026-10-09</li>
-          <li>Code: coming soon</li>
+          <li><a class="sheet-link" href={repo} rel="noopener noreferrer" target="_blank">Code on GitHub</a></li>
+          <li><a class="sheet-link" href="#try">Try it live on this page</a></li>
         </ul>
       </div>
     </div>
@@ -148,6 +155,236 @@ const jsonLd = {
     </div>
   </section>
 
+  <!-- TRY IT: quiet section (no field: the results field sits right above).
+       Copy column left, one evidence card right that switches from editing
+       to "proposes / decides". -->
+  <section class="s-try" id="try" aria-labelledby="try-title">
+    <div class="wrap try-grid">
+      <div class="try-copy">
+        <h2 id="try-title" class="h2s">Try it with a ticket</h2>
+        <p class="try-lede">Write a ticket or load one of my test tickets. It runs the same checks as the n8n flow. I moved them to a small serverless function, so you don't need to install n8n.</p>
+        <p>The model suggests a category and has to quote the words that justify it. Code checks the quote and picks the queue. If a check fails, you'll see which one sent the ticket to a person. The same ticket can get a different answer on another run, as it did in my tests.</p>
+        <div class="try-examples" role="group" aria-labelledby="try-ex-label">
+          <p id="try-ex-label" class="try-ex-label">Load a test ticket</p>
+          <div class="try-ex-row">
+            {examples.map((ex, i) => (
+              <button type="button" class="btn btn-ghost try-ex" data-ex={i}>
+                {ex.label}<span class="try-ex-id">{ex.id}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <p class="try-code"><a href={repo} rel="noopener noreferrer" target="_blank">Read the code on GitHub</a></p>
+      </div>
+
+      <div class="card try-card" id="try-card">
+        <!-- Edit mode -->
+        <form class="try-ticket" id="try-form" novalidate>
+          <p class="ev-meta try-meta"><span>New ticket</span><span>synthetic only</span></p>
+          <div class="try-field">
+            <div class="try-field-head">
+              <label for="try-subject">Subject</label>
+              <span class="try-count" id="try-subject-count" aria-live="off">0 / {limits.subject}</span>
+            </div>
+            <input id="try-subject" name="subject" type="text" maxlength={limits.subject} autocomplete="off" spellcheck="true" aria-describedby="try-subject-count" />
+          </div>
+          <div class="try-field">
+            <div class="try-field-head">
+              <label for="try-body">Ticket text</label>
+              <span class="try-count" id="try-body-count" aria-live="off">0 / {limits.body}</span>
+            </div>
+            <textarea id="try-body" name="body" rows="6" maxlength={limits.body} required aria-describedby="try-body-count try-notice"></textarea>
+          </div>
+          <p class="try-notice" id="try-notice">Synthetic demo. Please don't paste real customer data. Your text is sent to Google's Gemini API on the free tier, where Google may use it to improve its products and human reviewers may read it. This site doesn't store it.</p>
+          <div class="try-actions">
+            <button type="submit" class="btn btn-primary try-run" id="try-run">Run triage</button>
+          </div>
+        </form>
+
+        <!-- Result mode: the ticket as sent, with the evidence marked -->
+        <div class="try-ticket try-sent" id="try-sent" hidden>
+          <p class="ev-meta try-meta"><span id="try-sent-id">Ticket</span><span>as sent</span></p>
+          <p class="ev-subj try-sent-subj" id="try-sent-subj" tabindex="-1"></p>
+          <p class="ev-body try-sent-body" id="try-sent-body"></p>
+          <button type="button" class="btn btn-ghost try-edit" id="try-edit">Edit the ticket</button>
+        </div>
+
+        <div aria-live="polite" id="try-live">
+          <p class="try-status" id="try-status" tabindex="-1"></p>
+          <div class="ev-step">
+            <h3 class="ev-h">The model proposes</h3>
+            <p class="try-wait" id="try-propose-wait">Send a ticket to see what the model suggests.</p>
+            <dl class="ev-kv" id="try-kv" hidden>
+              <dt>category</dt><dd id="try-category"></dd>
+              <dt>priority</dt><dd id="try-priority"></dd>
+              <dt>confidence</dt><dd id="try-confidence"></dd>
+              <dt>evidence</dt><dd id="try-evidence"></dd>
+            </dl>
+          </div>
+          <div class="ev-step ev-decide">
+            <h3 class="ev-h">The code decides</h3>
+            <p class="try-wait try-wait-dark" id="try-decide-wait">Checks the quote, the confidence, a second category and the ticket length, then picks the queue.</p>
+            <div id="try-verdict" hidden>
+              <p class="ev-verdict"><span class="ev-pill" id="try-queue"></span><span class="ev-why" id="try-why"></span></p>
+              <ul class="try-reasons" id="try-reasons"></ul>
+              <p class="try-usage" id="try-usage"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" id="try-examples" set:html={examplesJson}></script>
+    <script is:inline define:vars={{ repo }}>
+      (() => {
+        const $ = (id) => document.getElementById(id);
+        const examples = JSON.parse($('try-examples').textContent);
+        const form = $('try-form'), subj = $('try-subject'), body = $('try-body'), run = $('try-run');
+        const card = $('try-card'), sent = $('try-sent'), status = $('try-status');
+        let exampleId = null;
+
+        const count = () => {
+          $('try-subject-count').textContent = subj.value.length + ' / ' + subj.maxLength;
+          $('try-body-count').textContent = body.value.length + ' / ' + body.maxLength;
+        };
+        subj.addEventListener('input', () => { exampleId = null; count(); });
+        body.addEventListener('input', () => { exampleId = null; count(); });
+
+        document.querySelectorAll('.try-ex').forEach((b) => b.addEventListener('click', () => {
+          const ex = examples[Number(b.dataset.ex)];
+          showForm();
+          subj.value = ex.subject; body.value = ex.body; exampleId = ex.id;
+          count(); setStatus('');
+          run.focus();
+        }));
+
+        function setStatus(text, link) {
+          status.textContent = text;
+          if (link) {
+            status.append(' ');
+            const a = document.createElement('a');
+            a.href = repo; a.rel = 'noopener noreferrer'; a.target = '_blank'; a.textContent = link;
+            status.append(a);
+          }
+          status.hidden = !text;
+        }
+
+        function resetSteps(waitText) {
+          $('try-propose-wait').textContent = waitText || 'Send a ticket to see what the model suggests.';
+          $('try-propose-wait').hidden = false; $('try-kv').hidden = true;
+          $('try-decide-wait').hidden = false; $('try-verdict').hidden = true;
+        }
+
+        function showForm() {
+          sent.hidden = true; form.hidden = false; resetSteps();
+        }
+        $('try-edit').addEventListener('click', () => { showForm(); setStatus(''); body.focus(); });
+
+        // Same normalisation idea as the server check: ignore case, quotes and
+        // runs of whitespace. Used only to find where to draw the mark.
+        const QUOTES = '[\\u2018\\u2019\\u201C\\u201D"\'`]*';
+        function findQuote(text, quote) {
+          const q = quote.replace(/[‘’“”"'`]/g, '').trim();
+          if (!q) return null;
+          const src = Array.from(q).map((c) => (/\s/.test(c) ? null : c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+          let pattern = '';
+          src.forEach((c, i) => {
+            if (c === null) { if (src[i - 1] !== null) pattern += '\\s+' + QUOTES; }
+            else pattern += c + (i < src.length - 1 && src[i + 1] !== null ? QUOTES : '');
+          });
+          const m = new RegExp(pattern, 'iu').exec(text);
+          return m ? { start: m.index, end: m.index + m[0].length } : null;
+        }
+
+        function fillMarked(el, text, range) {
+          el.textContent = '';
+          if (!range) { el.textContent = text; return; }
+          const mark = document.createElement('span');
+          mark.className = 'mark try-mark';
+          mark.textContent = text.slice(range.start, range.end);
+          el.append(text.slice(0, range.start), mark, text.slice(range.end));
+        }
+
+        function render(t, r) {
+          form.hidden = true; sent.hidden = false;
+          $('try-sent-id').textContent = 'Ticket ' + t.id;
+          const quoteOk = !r.review_reasons.includes('evidence quote not found in the ticket');
+          const inBody = quoteOk ? findQuote(t.body, r.evidence) : null;
+          const inSubj = quoteOk && !inBody ? findQuote(t.subject, r.evidence) : null;
+          fillMarked($('try-sent-subj'), t.subject || '(no subject)', inSubj);
+          fillMarked($('try-sent-body'), t.body, inBody);
+
+          const failed = r.review_reasons.some((x) => x.startsWith('classification failed'));
+          $('try-propose-wait').hidden = !failed; $('try-kv').hidden = failed;
+          if (failed) {
+            $('try-propose-wait').textContent = 'The model didn’t return a usable answer.';
+          } else {
+            $('try-category').textContent = r.category;
+            $('try-priority').textContent = r.priority;
+            $('try-confidence').textContent = String(r.confidence);
+            $('try-evidence').textContent = (inBody || inSubj) ? 'marked in the ticket'
+              : r.evidence ? '“' + r.evidence + '”, not found in the ticket' : 'none given';
+          }
+
+          $('try-decide-wait').hidden = true; $('try-verdict').hidden = false;
+          $('try-queue').textContent = r.suggested_queue;
+          const reasons = $('try-reasons');
+          reasons.textContent = '';
+          if (r.needs_human) {
+            $('try-why').textContent = 'Sent to a person because:';
+            r.review_reasons.forEach((x) => { const li = document.createElement('li'); li.textContent = x; reasons.append(li); });
+          } else {
+            $('try-why').textContent = 'The quote is in the ticket, no second category fits, confidence is 0.7 or higher and the ticket is long enough to hold a request.';
+          }
+          reasons.hidden = !r.needs_human;
+          const u = r.usage;
+          $('try-usage').textContent = u ? 'Tokens: ' + u.prompt_tokens + ' in, ' + u.output_tokens + ' out.' : '';
+          setStatus('');
+          $('try-sent-subj').focus({ preventScroll: false });
+        }
+
+        function setLoading(on) {
+          // aria-disabled, not disabled: a disabled button drops keyboard focus to <body>.
+          run.setAttribute('aria-disabled', on ? 'true' : 'false');
+          run.textContent = on ? 'Running…' : 'Run triage';
+          card.setAttribute('aria-busy', on ? 'true' : 'false');
+          if (on) resetSteps('Asking the model…');
+        }
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (run.getAttribute('aria-disabled') === 'true') return;
+          if (!body.value.trim()) { setStatus('Write the ticket text first.'); body.focus(); return; }
+          const t = {
+            id: exampleId || 'LIVE-' + Math.random().toString(36).slice(2, 8).toUpperCase(),
+            subject: subj.value, body: body.value,
+          };
+          setStatus(''); setLoading(true);
+          let res, data = null;
+          try {
+            res = await fetch('/api/triage', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(t) });
+            try { data = await res.json(); } catch { data = null; }
+          } catch {
+            setLoading(false); resetSteps();
+            setStatus('This page couldn’t reach the demo. Check your connection and try again.');
+            status.focus();
+            return;
+          }
+          setLoading(false);
+          if (res.ok && data && data.suggested_queue) { render(t, data); return; }
+          resetSteps();
+          if (res.status === 429) setStatus('The demo is busy. Try again in a few minutes.');
+          else if (res.status === 503) setStatus('The live demo is offline right now.', 'The code and results are on GitHub.');
+          else if (res.status === 400) setStatus('The demo didn’t accept that ticket. The text can’t be empty, the subject can be up to 120 characters and the text up to 1,000.');
+          else setStatus('Something went wrong on my side. Try again in a moment.');
+          // Keep keyboard focus inside the component: the message itself takes it.
+          status.focus();
+        });
+
+        count(); setStatus('');
+      })();
+    </script>
+  </section>
+
   <!-- CAVEATS: heading above, list in two columns, body size -->
   <section class="s-caveats" aria-labelledby="caveats-title">
     <div class="wrap">
@@ -176,7 +413,7 @@ const jsonLd = {
         <li>Run it in suggestion mode first. Behind a dry-run flag, with private notes only, so we can compare its suggestions with your agents' decisions before it routes anything.</li>
         <li>Work on priority. It's the part the demo gets wrong without noticing. I'd test explicit rules for deadlines and outage language and measure whether they help.</li>
         <li>Run each set more than once to see how much the numbers move before trusting any of them.</li>
-        <li>Lock it down. The demo webhook has no authentication and is only fine on localhost. A real one needs header auth, a rate limit, a request size limit, a set retention period for execution logs (they contain ticket text), and personal data redacted before anything reaches the model provider.</li>
+        <li>Lock it down. The n8n webhook in the repo has no authentication, so it's only safe on localhost. A real one needs header auth, a rate limit, a request size limit, a set retention period for execution logs (they contain ticket text), and personal data redacted before anything reaches the model provider.</li>
       </ul>
     </div>
   </section>
@@ -207,7 +444,7 @@ const jsonLd = {
   /* ---------- HERO ---------- */
   .cs-hero { display: grid; grid-template-columns: var(--split); }
   .cs-hero-copy { padding: calc(var(--header-h) + var(--space-7)) var(--gutter) var(--space-8); }
-  .back { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; font-weight: 600; font-size: var(--type-small); text-decoration: none; }
+  .back { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-tap); font-weight: 600; font-size: var(--type-small); text-decoration: none; }
   .back:hover { text-decoration: underline; }
   .back-arrow { display: inline-flex; transform: scaleX(-1); }
   .back-arrow :global(svg) { width: 18px; height: 18px; }
@@ -230,6 +467,8 @@ const jsonLd = {
   .sheet-list li { padding: var(--space-2) var(--space-5); font-size: var(--type-body-sm); }
   .sheet-list li + li { border-top: 1px solid var(--color-rule); }
   .sheet-list code { white-space: normal; }
+  .sheet-list li:has(.sheet-link) { padding-block: 0; }
+  .sheet-link { display: flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
 
   /* ---------- CONTEXT ---------- */
   .s-context { padding-block: var(--rhythm-5) var(--space-7); }
@@ -277,6 +516,93 @@ const jsonLd = {
   .verdict { font-size: var(--type-lead); line-height: var(--leading-relaxed); }
   .miss { border-top: 1px solid var(--color-rule); padding-top: var(--space-4); }
 
+  /* ---------- TRY IT ---------- */
+  .s-try { padding-block: var(--rhythm-4) var(--rhythm-5); }
+  .try-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); align-items: start; }
+  .try-copy { display: grid; gap: var(--space-4); max-width: 48ch; }
+  .try-copy .h2s { max-width: 10ch; margin-bottom: var(--space-2); }
+  .try-lede { font-size: var(--type-lead); line-height: var(--leading-relaxed); }
+  .try-examples { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-rule); }
+  .try-ex-label { font-weight: 600; font-size: var(--type-small); }
+  .try-ex-row { margin-top: var(--space-3); display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .try-ex { min-height: var(--size-tap); padding: 0 var(--space-4); gap: var(--space-2); font-size: var(--type-small); }
+  .try-ex-id { font-weight: 400; color: var(--color-ink-2); }
+  .try-ex:hover .try-ex-id { color: var(--color-ink); }
+  .try-code a { display: inline-flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
+
+  /* The card: same anatomy as the hero's evidence card (ticket, proposes, decides).
+     It sits on ground here, so it gets a hairline as well as the lime-tinted shadow. */
+  .try-card { border: 1px solid var(--color-rule); }
+  .try-card[aria-busy='true'] .ev-step { color: var(--color-ink-2); }
+  .try-card[aria-busy='true'] .ev-decide { color: var(--color-decide-ink); }
+  .try-ticket { padding: var(--space-5) var(--space-5) var(--space-4); display: grid; gap: var(--space-4); }
+  .try-ticket[hidden], .try-card [hidden] { display: none; }
+  .ev-meta { display: flex; justify-content: space-between; gap: var(--space-4); font-size: var(--type-label); color: var(--color-ink-2); }
+  .ev-subj { font-weight: 700; font-size: var(--type-subject); line-height: var(--leading-subject); letter-spacing: -0.01em; }
+  .ev-body { font-size: var(--type-body-sm); line-height: var(--leading-ticket); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .try-sent { gap: var(--space-2); }
+  .try-sent-subj:focus { outline: none; }
+  .try-sent-subj:focus-visible { outline: var(--border-focus) solid var(--color-focus); }
+  .try-edit { justify-self: start; margin-top: var(--space-3); min-height: var(--size-tap); padding: 0 var(--space-4); font-size: var(--type-small); }
+
+  .try-field { display: grid; gap: var(--space-1); }
+  .try-field-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+  .try-field label { font-weight: 600; font-size: var(--type-label); }
+  .try-count { font-size: var(--type-label); color: var(--color-ink-2); font-variant-numeric: tabular-nums; }
+  .try-field input, .try-field textarea {
+    width: 100%;
+    font: inherit;
+    color: var(--color-ink);
+    background: var(--color-ground);
+    border: 1px solid var(--color-rule);
+    border-radius: 0;
+    padding: var(--space-3);
+    caret-color: var(--color-ink);
+  }
+  .try-field input { min-height: var(--size-field); font-weight: 700; font-size: var(--type-subject); line-height: var(--leading-subject); letter-spacing: -0.01em; }
+  .try-field textarea { resize: vertical; min-height: 9.6em; font-size: var(--type-body-sm); line-height: var(--leading-ticket); }
+  .try-field input:hover, .try-field textarea:hover { border-color: var(--color-ink-2); }
+  .try-field input:focus-visible, .try-field textarea:focus-visible { border-color: var(--color-ink); outline: var(--border-focus) solid var(--color-focus); outline-offset: 1px; border-radius: 0; }
+  .try-notice { font-size: var(--type-small); line-height: var(--leading-small); color: var(--color-ink); }
+  .try-actions { display: flex; }
+  .try-run { min-width: 12ch; }
+  .try-run[aria-disabled='true'] { cursor: progress; background: var(--color-ink-2); border-color: var(--color-ink-2); }
+
+  .try-status { padding: var(--space-4) var(--space-5); border-top: 1.5px solid var(--color-ink); font-weight: 600; font-size: var(--type-body-sm); }
+  .try-status[hidden] { display: none; }
+  .try-status:focus { outline: none; }
+  .try-status:focus-visible { outline: var(--border-focus) solid var(--color-focus); outline-offset: calc(-1 * var(--border-focus)); }
+  .ev-step { border-top: 1px solid var(--color-rule); padding: var(--space-4) var(--space-5); }
+  .ev-h { font-family: var(--font-display); font-weight: 400; font-size: var(--type-h3); line-height: var(--leading-snug); letter-spacing: -0.01em; }
+  .ev-kv { display: grid; grid-template-columns: auto 1fr; column-gap: var(--space-5); row-gap: var(--space-1); margin-top: var(--space-2); font-size: var(--type-label); }
+  .ev-kv dt { color: var(--color-ink-2); }
+  .ev-kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+  .ev-decide { background: var(--color-decide); color: var(--color-decide-ink); border-top: 0; padding-bottom: var(--space-5); }
+  .ev-verdict { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-top: var(--space-2); }
+  .ev-pill { background: var(--color-mark); color: var(--color-mark-ink); border-radius: var(--radius-pill); padding: var(--space-1) var(--space-3); font-weight: 700; font-size: var(--type-label); white-space: nowrap; }
+  .ev-why { font-size: var(--type-label); line-height: var(--leading-small); }
+  .try-wait { margin-top: var(--space-2); font-size: var(--type-small); line-height: var(--leading-small); color: var(--color-ink-2); }
+  .try-wait-dark { color: var(--color-decide-ink); }
+  .try-reasons { margin-top: var(--space-3); padding-left: var(--space-5); font-size: var(--type-label); line-height: var(--leading-small); display: grid; gap: var(--space-1); }
+  .try-usage { margin-top: var(--space-3); font-size: var(--type-caption); }
+  .try-usage:empty { display: none; }
+
+  /* The one motion here: the mark swipes across the quote when a result
+     arrives, so you see where the evidence came from. Off under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .try-sent-body :global(.try-mark), .try-sent-subj :global(.try-mark) {
+      background-color: transparent;
+      background-image: linear-gradient(var(--color-mark), var(--color-mark));
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      animation: try-swipe 700ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+    }
+    @keyframes try-swipe {
+      from { background-size: 0% 100%; }
+      to { background-size: 100% 100%; }
+    }
+  }
+
   /* ---------- CAVEATS ---------- */
   .s-caveats { padding-block: var(--space-9) var(--space-8); }
   .caveats { margin-top: var(--space-6); grid-template-columns: 1fr 1fr; column-gap: var(--space-8); row-gap: var(--space-4); }
@@ -296,6 +622,7 @@ const jsonLd = {
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 1100px) {
+    .try-grid { gap: var(--space-7); grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); }
     .flow, .caveats { grid-template-columns: 1fr; }
     .results-copy { padding-left: var(--space-8); }
   }
@@ -319,6 +646,10 @@ const jsonLd = {
     .results-copy { order: -1; padding: var(--space-8) var(--gutter) var(--space-7); }
     .results-field { padding: var(--space-7) var(--gutter) var(--space-8); justify-content: flex-start; }
     .results-card { margin-right: 0; }
+    .s-try { padding-block: var(--rhythm-1) var(--rhythm-3); }
+    .try-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+    .try-copy { max-width: var(--measure); }
+    .try-card { max-width: var(--card-max); width: 100%; }
     .s-caveats { padding-block: var(--rhythm-4) var(--rhythm-2); }
     .s-real { padding-block: var(--rhythm-2) var(--rhythm-4); }
     .cs-cta { padding-block: var(--rhythm-5) var(--space-9); }
@@ -332,5 +663,10 @@ const jsonLd = {
     .data-table td { white-space: nowrap; }
     .results-table tbody th { font-size: var(--type-small); }
     .cta-actions .btn { flex: 1 1 100%; }
+    .try-ticket { padding: var(--space-4) var(--space-4) var(--space-3); }
+    .ev-step, .try-status { padding: var(--space-3) var(--space-4); }
+    .ev-decide { padding-bottom: var(--space-4); }
+    .try-run { flex: 1 1 100%; }
+    .try-ex { flex: 1 1 100%; justify-content: space-between; }
   }
 </style>

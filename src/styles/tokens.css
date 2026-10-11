@@ -82,6 +82,11 @@
   --radius-pill: 999px;
   --radius-mark: 3px 10px 4px 12px;
   --radius-focus: 4px;
+  --border-focus: 2px;
+
+  /* Fixed control sizes (OB-04) */
+  --size-tap: 44px;
+  --size-field: 48px;
   --shadow-card: 0 2px 3px #3A4A0F14, 0 24px 48px -24px #3A4A0F59;
 
   /* Layout */
@@ -91,4 +96,5 @@
   --card-overlap: clamp(-120px, -6vw, 0px);
   --measure: 66ch;
   --header-h: 88px;
+  --card-max: 640px;
 }
