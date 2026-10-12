@@ -6,6 +6,7 @@ import Icon from '../components/Icon.astro';
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
 const mailProblem = `mailto:${email}?subject=Zendesk%20problem`;
+const calCall = 'https://cal.com/nestor-velasquez-ynlodg/15min';
 
 const title = 'Nestor Velasquez | Zendesk Support Ops Automation';
 const description =
@@ -25,6 +26,7 @@ const person = {
     '@type': 'ContactPoint',
     contactType: 'sales',
     email,
+    url: calCall,
     availableLanguage: ['en', 'es'],
   },
   knowsAbout: ['Zendesk', 'Ticket routing', 'SLA policies', 'Macros', 'n8n', 'Zapier', 'REST APIs', 'Webhooks'],
@@ -66,8 +68,9 @@ const jsonLd = {
     <div class="hero-copy">
       <p class="hero-sub">Send me the ticket problem your team keeps working around. We agree on one fix, I build and test it at a fixed price, and you get it documented so your team can maintain it.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href={mailProblem}><Icon name="mail" />Email me the problem</a>
-        <a class="btn btn-ghost" href="/work/ai-ticket-triage">See the triage demo</a>
+        <a class="btn btn-primary" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a>
+        <a class="btn btn-ghost" href={mailProblem}><Icon name="mail" />Email me the problem</a>
+        <a class="arrow-link hero-demo" href="/work/ai-ticket-triage">See the triage demo <Icon name="arrow" /></a>
       </div>
       <p class="hero-price"><strong class="nowrap">Fixed price, from $250</strong> · <span class="nowrap">English and Spanish</span></p>
     </div>
@@ -174,7 +177,7 @@ const jsonLd = {
       <div class="demo-links">
         <a class="btn btn-primary" href="/work/ai-ticket-triage#try">Try it live</a>
         <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
-        <a class="arrow-link" href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Code on GitHub</a>
+        <a class="arrow-link" href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Code on GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
       </div>
     </div>
   </section>
@@ -253,17 +256,18 @@ const jsonLd = {
   <!-- CONTACT: the field returns at page scale -->
   <section class="contact on-field" id="contact" aria-labelledby="contact-title">
     <div class="wrap contact-grid">
-      <h2 id="contact-title" class="contact-h">Send me the problem</h2>
+      <h2 id="contact-title" class="contact-h">Tell me what's breaking</h2>
       <div class="contact-body">
-        <p class="lead">Email me which Zendesk plan you're on, roughly how many tickets you get a month, and the one thing in the queue you'd fix first. I'll reply with what I'd look at first and whether it fits the fixed-price repair. You can write in English or Spanish.</p>
+        <p class="lead">Book a <span class="nowrap">15-minute</span> call and bring three things: your Zendesk plan, roughly how many tickets you get a month, and the one thing in the queue you'd fix first. I'll tell you where I'd start and whether it fits the fixed-price repair. If you'd rather write, email me the same three things. English or Spanish both work.</p>
+        <a class="btn btn-primary contact-call" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a>
         <dl class="contact-list">
           <div>
             <dt>Email</dt>
-            <dd><a class="contact-email" href={mailProblem}>{email}</a></dd>
+            <dd><a class="contact-li" href={mailProblem}><Icon name="mail" />{email}</a></dd>
           </div>
           <div>
             <dt>LinkedIn</dt>
-            <dd><a class="contact-li" href={linkedin} rel="me noopener" target="_blank"><Icon name="linkedin" />linkedin.com/in/nestor-david-velasquez</a></dd>
+            <dd><a class="contact-li" href={linkedin} rel="me noopener" target="_blank"><Icon name="linkedin" />linkedin.com/in/nestor-david-velasquez<span class="visually-hidden"> (opens in a new tab)</span></a></dd>
           </div>
         </dl>
       </div>
@@ -405,16 +409,10 @@ const jsonLd = {
   .contact-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-7); align-items: end; }
   .contact-h { font-size: var(--type-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display); max-width: 8ch; }
   .contact-body .lead { max-width: 46ch; }
-  .contact-list { margin-top: var(--space-6); display: grid; gap: var(--space-4); }
+  .contact-call { margin-top: var(--space-6); }
+  .contact-list { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-ink); display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-7); }
   .contact-list dt { font-size: var(--type-label); font-weight: 600; }
   .contact-list dd { margin: 0; }
-  .contact-email {
-    display: inline-flex; align-items: center; min-height: var(--size-tap);
-    font-family: var(--font-display);
-    font-size: var(--type-h3-lg);
-    letter-spacing: -0.02em;
-    overflow-wrap: anywhere;
-  }
   .contact-li { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-tap); font-weight: 600; overflow-wrap: anywhere; }
   .contact-li :global(svg) { width: 18px; height: 18px; flex: none; }
 
@@ -465,6 +463,7 @@ const jsonLd = {
     .data-table th, .data-table td { padding-inline: var(--space-4); }
     .data-table td { white-space: normal; }
     .demo-label, .demo-caveats { padding-inline: var(--space-4); }
+    .contact-list { flex-direction: column; }
   }
 
   @media (max-width: 420px) {

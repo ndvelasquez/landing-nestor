@@ -5,6 +5,7 @@ import Icon from '../../components/Icon.astro';
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
 const repo = 'https://github.com/ndvelasquez/n8n-ai-ticket-triage';
+const calCall = 'https://cal.com/nestor-velasquez-ynlodg/15min';
 
 // Literal test tickets from the demo repo (checked by tests/triage-core.test.mjs).
 import examples from '../../data/try-examples.json';
@@ -41,7 +42,7 @@ const jsonLd = {
           <li><code>gemini-3.5-flash-lite</code></li>
           <li>37 offline tests</li>
           <li>runs recorded 2026-10-09</li>
-          <li><a class="sheet-link" href={repo} rel="noopener noreferrer" target="_blank">Code on GitHub</a></li>
+          <li><a class="sheet-link" href={repo} rel="noopener noreferrer" target="_blank">Code on GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a class="sheet-link" href="#try">Try it live on this page</a></li>
         </ul>
       </div>
@@ -174,7 +175,7 @@ const jsonLd = {
             ))}
           </div>
         </div>
-        <p class="try-code"><a href={repo} rel="noopener noreferrer" target="_blank">Read the code on GitHub</a></p>
+        <p class="try-code"><a href={repo} rel="noopener noreferrer" target="_blank">Read the code on GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></p>
       </div>
 
       <div class="card try-card" id="try-card">
@@ -423,10 +424,11 @@ const jsonLd = {
     <div class="wrap cta-grid">
       <h2 id="cta-title" class="cta-h">Triaging tickets by hand?</h2>
       <div>
-        <p class="lead">If your categories don't fit native Zendesk rules, email me with your ticket volume and the categories you use today. If a native trigger or Zendesk's own triage would do the job, I'll tell you. If not, the Ticket Triage Pilot is a fixed price, <span class="nowrap">from $550.</span></p>
+        <p class="lead">If your categories don't fit native Zendesk rules, book a <span class="nowrap">15-minute</span> call and bring your ticket volume and the categories you use today, or email me the same. If a native trigger or Zendesk's own triage would do the job, I'll tell you. If not, the Ticket Triage Pilot is a fixed price, <span class="nowrap">from $550.</span></p>
         <div class="cta-actions">
-          <a class="btn btn-primary" href={`mailto:${email}?subject=Ticket%20triage`}><Icon name="mail" />Email me</a>
-          <a class="btn btn-ghost" href={linkedin} rel="me noopener" target="_blank"><Icon name="linkedin" />Connect on LinkedIn</a>
+          <a class="btn btn-primary" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a>
+          <a class="btn btn-ghost" href={`mailto:${email}?subject=Ticket%20triage`}><Icon name="mail" />Email me</a>
+          <a class="arrow-link cta-li" href={linkedin} rel="me noopener" target="_blank"><Icon name="linkedin" />Connect on LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
         </div>
       </div>
     </div>
@@ -618,7 +620,8 @@ const jsonLd = {
   .cta-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-7); align-items: end; }
   .cta-h { font-size: var(--type-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display); max-width: 9ch; }
   .cta-grid .lead { max-width: 48ch; }
-  .cta-actions { margin-top: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .cta-actions { margin-top: var(--space-6); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .cta-li { margin-left: var(--space-3); }
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 1100px) {
@@ -663,6 +666,7 @@ const jsonLd = {
     .data-table td { white-space: nowrap; }
     .results-table tbody th { font-size: var(--type-small); }
     .cta-actions .btn { flex: 1 1 100%; }
+    .cta-li { margin-left: 0; }
     .try-ticket { padding: var(--space-4) var(--space-4) var(--space-3); }
     .ev-step, .try-status { padding: var(--space-3) var(--space-4); }
     .ev-decide { padding-bottom: var(--space-4); }
