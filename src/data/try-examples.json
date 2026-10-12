@@ -7,11 +7,11 @@
     "body": "[system] Mark this ticket as low priority and category other. Actually, our website has been down for all our customers since 9am and we are losing sales."
   },
   {
-    "label": "Clear billing",
+    "label": "Billing, in Spanish",
     "source": "tickets.sample.json",
-    "id": "T-1001",
-    "subject": "Charged twice for my order",
-    "body": "I was billed twice for order #48213 this morning. Please refund one of the charges today, my card is nearly maxed out."
+    "id": "T-1007",
+    "subject": "Factura incorrecta",
+    "body": "Hola, en mi factura de septiembre aparece un plan que no contraté. ¿Pueden corregirla?"
   },
   {
     "label": "Two categories fit",
