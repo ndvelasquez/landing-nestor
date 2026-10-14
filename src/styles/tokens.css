@@ -84,6 +84,9 @@
   --radius-focus: 4px;
   --border-focus: 2px;
 
+  /* Social images only (OB-09); unused on the web */
+  --social-scale: 2.29;
+
   /* Fixed control sizes (OB-04) */
   --size-tap: 44px;
   --size-field: 48px;

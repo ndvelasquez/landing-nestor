@@ -7,16 +7,18 @@ interface Props {
   description: string;
   ogType?: 'website' | 'article';
   jsonLd?: Record<string, unknown>;
+  /** Root-relative path of a 1200x630 social image; defaults to /og.png. */
+  ogImagePath?: string;
 }
 
-const { title, description, ogType = 'website', jsonLd } = Astro.props;
+const { title, description, ogType = 'website', jsonLd, ogImagePath = '/og.png' } = Astro.props;
 
 // Absolute URLs only when a site URL is configured in astro.config.mjs
 // (pending: the Vercel URL). Without it, canonical/og:url/og:image are omitted
 // rather than emitted with a wrong host.
 const site = Astro.site;
 const canonical = site ? new URL(Astro.url.pathname, site).href : undefined;
-const ogImage = site ? new URL('/og.png', site).href : undefined;
+const ogImage = site ? new URL(ogImagePath, site).href : undefined;
 
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
