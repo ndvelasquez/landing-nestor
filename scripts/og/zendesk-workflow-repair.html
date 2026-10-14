@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>OG: zendesk-workflow-repair</title>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Schibsted+Grotesk:wght@400;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="../../src/styles/tokens.css">
+<style>
+/* OG image 1200x630 for /work/zendesk-workflow-repair.
+   Rendered by render.mjs into public/work/og-zendesk-workflow-repair.png.
+   Every size = web token x --social-scale (OB-09): the card shows at ~375 px
+   wide in a feed, so text must be >= 35 px here (>= 11 px when downscaled, OB-09).
+   Literals: canvas size, column fraction, 1.5-2 px hairlines. */
+:root { --s: var(--social-scale); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--color-ground); color: var(--color-ink); font-family: var(--font-body); }
+.wrap { display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--space-9) * 2.25); height: 100%; }
+.copy { padding: calc(var(--space-6) * var(--s)) calc(var(--space-6) * var(--s)) calc(var(--space-5) * var(--s)); display: flex; flex-direction: column; justify-content: space-between; }
+.tag {
+  display: inline-block; align-self: flex-start;
+  border: 2px solid var(--color-ink); border-radius: var(--radius-pill);
+  padding: calc(var(--space-1) * var(--s)) calc(var(--space-3) * var(--s));
+  font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-snug); white-space: nowrap;
+}
+h1 { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--type-numeral-sm) * var(--s)); line-height: var(--leading-display); letter-spacing: var(--tracking-display); }
+.res { font-weight: 600; font-size: calc(var(--type-price) * var(--s)); line-height: var(--leading-snug); }
+.mark { background: var(--color-mark); color: var(--color-mark-ink); border-radius: var(--radius-mark); padding: 0 calc(var(--space-1) * var(--s)); }
+/* The field holds the artifact: H-3022's priority chain, before the fix. */
+.field { background: var(--color-field); display: flex; align-items: center; justify-content: center; }
+.chain { list-style: none; display: grid; justify-items: center; gap: calc(var(--space-2) * var(--s)); }
+.out {
+  background: var(--color-card); border: 2px solid var(--color-ink); border-radius: var(--radius-pill);
+  padding: 0 calc(var(--space-3) * var(--s));
+  font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-compact);
+}
+.out-dark { background: var(--color-decide); color: var(--color-decide-ink); border-color: var(--color-decide); }
+.down { display: block; width: calc(var(--space-5) * var(--s)); height: calc(var(--space-5) * var(--s)); }
+</style></head><body>
+<div class="wrap">
+  <div class="copy">
+    <p class="tag">Synthetic demo; not a client project.</p>
+    <h1>Brightwick: every ticket in one queue</h1>
+    <p class="res">Priority fights: <span class="mark">0 of 25 after</span></p>
+  </div>
+  <div class="field">
+    <ol class="chain" aria-label="H-3022 priority before the fix">
+      <li class="out">normal</li>
+      <li><svg class="down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></li>
+      <li class="out">urgent</li>
+      <li><svg class="down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></li>
+      <li class="out out-dark">high</li>
+    </ol>
+  </div>
+</div>
+</body></html>
