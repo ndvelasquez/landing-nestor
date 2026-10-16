@@ -435,9 +435,10 @@ const run2 = [
   .cta-pdf a { display: inline-flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
 
   /* ---------- RESPONSIVE ---------- */
-  /* One field per viewport at 1440x900 and 1920x1080: extra room on the outer edges of the
-     two sections between the hero field and the 5-changes field (tokens: space-rhythm.field-sep). */
-  @media (min-width: 1100px) {
+  /* One field per viewport (two-column layout, up to 1200px tall): extra room on the outer edges of
+     the two sections between the hero field and the 5-changes field (tokens: space-rhythm.field-sep).
+     Margin is only ~7px at 1099-1100px wide: re-measure if the setup/wrong copy changes. */
+  @media (min-width: 901px) {
     .s-setup { padding-top: calc(var(--space-9) + var(--rhythm-field-sep)); }
     .s-wrong { padding-bottom: calc(var(--rhythm-7) + var(--rhythm-field-sep)); }
   }

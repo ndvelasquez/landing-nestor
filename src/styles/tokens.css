@@ -76,7 +76,7 @@
   --rhythm-5: 104px;
   --rhythm-6: 112px;
   --rhythm-7: 136px;
-  /* Extra padding between two color fields at >=1100px, viewport-height aware (see tokens.json space-rhythm.field-sep) */
+  /* Extra padding between two color fields at >=901px, viewport-height aware; capped, so one field per viewport holds up to 1200px tall (see tokens.json space-rhythm.field-sep, color.field) */
   --rhythm-field-sep: clamp(32px, calc(50vh - 434px), 168px);
 
   /* Shape and depth */
