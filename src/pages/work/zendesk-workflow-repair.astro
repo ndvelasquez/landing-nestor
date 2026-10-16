@@ -435,6 +435,12 @@ const run2 = [
   .cta-pdf a { display: inline-flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
 
   /* ---------- RESPONSIVE ---------- */
+  /* One field per viewport at 1440x900 and 1920x1080: extra room on the outer edges of the
+     two sections between the hero field and the 5-changes field (tokens: space-rhythm.field-sep). */
+  @media (min-width: 1100px) {
+    .s-setup { padding-top: calc(var(--space-9) + var(--rhythm-field-sep)); }
+    .s-wrong { padding-bottom: calc(var(--rhythm-7) + var(--rhythm-field-sep)); }
+  }
   @media (max-width: 1100px) {
     .zr-hero-copy { padding-left: var(--space-8); }
     .changes-copy { padding-right: var(--space-8); }
