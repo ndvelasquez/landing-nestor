@@ -44,13 +44,15 @@ code {
   font-size: 0.94em;
   background: var(--color-card);
   border: 1px solid var(--color-rule);
-  border-radius: 6px;
+  border-radius: var(--radius-code);
   padding: 0 0.3em;
   white-space: nowrap;
 }
 
-/* Tabular figures only on the numbers, not on labels ("set , 25" bug). */
-td { font-variant-numeric: tabular-nums; }
+/* Tabular figures only in numeric result cells. Text cells (.wrap-ok, the home
+   before/after table) keep proportional figures: tnum gave commas and colons
+   digit width ("4 groups , 7 routing triggers"). */
+.data-table td:not(.wrap-ok) { font-variant-numeric: tabular-nums; }
 
 .visually-hidden {
   position: absolute !important;
@@ -91,9 +93,9 @@ td { font-variant-numeric: tabular-nums; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 54px;
-  padding: 0 26px;
+  gap: var(--space-2);
+  min-height: var(--size-btn);
+  padding: 0 var(--space-5);
   border-radius: var(--radius-pill);
   border: 1.5px solid var(--color-ink);
   font-weight: 600;
@@ -102,7 +104,7 @@ td { font-variant-numeric: tabular-nums; }
   text-decoration: none;
   transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
 }
-.btn svg { width: 18px; height: 18px; flex: none; }
+.btn svg { width: var(--size-icon); height: var(--size-icon); flex: none; }
 .btn-primary { background: var(--color-ink); color: var(--color-ground); }
 .btn-primary:hover { background: var(--color-ink-2); border-color: var(--color-ink-2); }
 .btn-ghost { background: transparent; color: var(--color-ink); }
@@ -116,8 +118,8 @@ td { font-variant-numeric: tabular-nums; }
   font-weight: 600;
   text-decoration: underline;
 }
-.arrow-link svg { width: 18px; height: 18px; transition: transform 160ms ease-out; }
-.arrow-link:hover svg { transform: translateX(3px); }
+.arrow-link svg { width: var(--size-icon); height: var(--size-icon); transition: transform 160ms ease-out; }
+.arrow-link:hover svg { transform: translateX(var(--space-1)); }
 
 /* ---------- Shared bits ---------- */
 .h2 {
@@ -130,10 +132,11 @@ td { font-variant-numeric: tabular-nums; }
 
 /* Dash list: a short ink rule instead of bullets */
 .dash-list { list-style: none; padding: 0; display: grid; gap: var(--space-2); }
-.dash-list li { position: relative; padding-left: 26px; }
+.dash-list li { position: relative; padding-left: var(--space-5); }
+/* Dash top rounded to a whole pixel so every 1.5px dash renders at the same weight. */
 .dash-list li::before {
-  content: ""; position: absolute; left: 0; top: 0.78em;
-  width: 14px; height: 1.5px; background: var(--color-ink);
+  content: ""; position: absolute; left: 0; top: round(down, 0.78em, 1px);
+  width: var(--size-dash); height: 1.5px; background: var(--color-ink);
 }
 
 /* White data card sitting on the lime field */

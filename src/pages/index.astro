@@ -578,7 +578,7 @@ const jsonLd = {
   @media (max-width: 560px) {
     .skill-cols, .past-list { grid-template-columns: 1fr; }
     .data-table th, .data-table td { padding-inline: var(--space-4); }
-    .data-table td { white-space: normal; }
+    /* Result cells stay on one line ("24 of 25"); the row label wraps instead (OB-04). */
     .triage-label, .triage-caveats { padding-inline: var(--space-4); }
     .contact-list > div { grid-template-columns: 1fr; gap: 0; }
   }

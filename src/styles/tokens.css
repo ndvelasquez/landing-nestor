@@ -78,12 +78,15 @@
   --rhythm-7: 136px;
   /* Extra padding between two color fields at >=901px, viewport-height aware; capped, so one field per viewport holds up to 1200px tall (see tokens.json space-rhythm.field-sep, color.field) */
   --rhythm-field-sep: clamp(32px, calc(50vh - 434px), 168px);
+  /* Triage case: added on both sides of the steps list between the how and results fields at >=901px (see tokens.json space-rhythm.field-sep-how) */
+  --rhythm-field-sep-how: clamp(36px, calc(50vh - 348px), 252px);
 
   /* Shape and depth */
   --radius-card: 18px;
   --radius-pill: 999px;
   --radius-mark: 3px 10px 4px 12px;
   --radius-focus: 4px;
+  --radius-code: 6px;
   --border-focus: 2px;
 
   /* Social images only (OB-09); unused on the web */
@@ -92,6 +95,9 @@
   /* Fixed control sizes (OB-04) */
   --size-tap: 44px;
   --size-field: 48px;
+  --size-btn: 54px;
+  --size-icon: 18px;
+  --size-dash: 14px;
   --shadow-card: 0 2px 3px #3A4A0F14, 0 24px 48px -24px #3A4A0F59;
 
   /* Layout */

@@ -449,7 +449,7 @@ const jsonLd = {
   .back { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-tap); font-weight: 600; font-size: var(--type-small); text-decoration: none; }
   .back:hover { text-decoration: underline; }
   .back-arrow { display: inline-flex; transform: scaleX(-1); }
-  .back-arrow :global(svg) { width: 18px; height: 18px; }
+  .back-arrow :global(svg) { width: var(--size-icon); height: var(--size-icon); }
   .cs-hero h1 {
     margin-top: var(--space-6);
     font-size: var(--type-hero);
@@ -624,6 +624,12 @@ const jsonLd = {
   .cta-li { margin-left: var(--space-3); }
 
   /* ---------- RESPONSIVE ---------- */
+  /* One field per viewport (two-column layout, up to 1200px tall): extra room on both sides of the
+     steps list between the how field and the results field (tokens: space-rhythm.field-sep-how). */
+  @media (min-width: 901px) {
+    .flow { margin-top: calc(var(--space-8) + var(--rhythm-field-sep-how)); }
+    .s-how { padding-bottom: calc(var(--space-9) + var(--rhythm-field-sep-how)); }
+  }
   @media (max-width: 1100px) {
     .try-grid { gap: var(--space-7); grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); }
     .flow, .caveats { grid-template-columns: 1fr; }

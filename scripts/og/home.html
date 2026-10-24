@@ -15,17 +15,18 @@ html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--c
 .copy { padding: calc(var(--space-5) * var(--s)) calc(var(--space-6) * var(--s)) calc(var(--space-5) * var(--s)); display: flex; flex-direction: column; justify-content: space-between; }
 .name { font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-snug); }
 h1 { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--type-h3) * var(--s)); line-height: var(--leading-tight); letter-spacing: var(--tracking-h2); }
-.mark { background: var(--color-mark); color: var(--color-mark-ink); border-radius: var(--radius-mark); padding: 0 calc(var(--space-1) * var(--s)); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.mark { background: var(--color-mark); color: var(--color-mark-ink); border-radius: var(--radius-mark); padding: 0 calc(var(--space-1) * var(--s)); margin: 0 calc(-1 * var(--space-1) * var(--s)); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .field { background: var(--color-field); display: flex; align-items: center; padding: calc(var(--space-4) * var(--s)); }
 .card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; width: 100%; }
 .q { padding: calc(var(--space-3) * var(--s)); font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-subject); }
 .meta { font-size: calc(var(--type-body-sm) * var(--s)); color: var(--color-ink-2); margin-bottom: calc(var(--space-2) * var(--s)); }
 .decide { background: var(--color-decide); color: var(--color-decide-ink); padding: calc(var(--space-3) * var(--s)); font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-snug); }
+.end { position: relative; }
 </style></head><body>
 <div class="wrap">
   <div class="copy">
     <p class="name">Nestor Velasquez</p>
-    <h1>Technical support, QA testing and AI evaluation, <span class="mark">in English and Spanish</span>.</h1>
+    <h1>Technical support, QA testing and AI evaluation, <span class="mark">in English and Spanish</span><span class="end">.</span></h1>
   </div>
   <div class="field">
     <div class="card">
