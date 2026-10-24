@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>OG: home</title>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Schibsted+Grotesk:wght@400;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="../../src/styles/tokens.css">
+<style>
+/* OG image 1200x630 for the home (landing v3). Rendered by render.mjs home
+   into public/og.png. Sizes = web token x --social-scale (OB-09).
+   Text from landing-v3-copy §11 (og alt) and the H-3023 evidence quote.
+   Literals: canvas size, 2 px hairlines. */
+:root { --s: var(--social-scale); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--color-ground); color: var(--color-ink); font-family: var(--font-body); }
+.wrap { display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--space-9) * 4); height: 100%; }
+.copy { padding: calc(var(--space-5) * var(--s)) calc(var(--space-6) * var(--s)) calc(var(--space-5) * var(--s)); display: flex; flex-direction: column; justify-content: space-between; }
+.name { font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-snug); }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: calc(var(--type-h3) * var(--s)); line-height: var(--leading-tight); letter-spacing: var(--tracking-h2); }
+.mark { background: var(--color-mark); color: var(--color-mark-ink); border-radius: var(--radius-mark); padding: 0 calc(var(--space-1) * var(--s)); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.field { background: var(--color-field); display: flex; align-items: center; padding: calc(var(--space-4) * var(--s)); }
+.card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; width: 100%; }
+.q { padding: calc(var(--space-3) * var(--s)); font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-subject); }
+.meta { font-size: calc(var(--type-body-sm) * var(--s)); color: var(--color-ink-2); margin-bottom: calc(var(--space-2) * var(--s)); }
+.decide { background: var(--color-decide); color: var(--color-decide-ink); padding: calc(var(--space-3) * var(--s)); font-weight: 700; font-size: calc(var(--type-body-sm) * var(--s)); line-height: var(--leading-snug); }
+</style></head><body>
+<div class="wrap">
+  <div class="copy">
+    <p class="name">Nestor Velasquez</p>
+    <h1>Technical support, QA testing and AI evaluation, <span class="mark">in English and Spanish</span>.</h1>
+  </div>
+  <div class="field">
+    <div class="card">
+      <div class="q"><p class="meta">Ticket H-3023 · synthetic</p><span class="mark">our website has been down for all our customers</span></div>
+      <p class="decide">The code decides: Tier 2</p>
+    </div>
+  </div>
+</div>
+</body></html>

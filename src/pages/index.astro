@@ -1,16 +1,21 @@
 ---
 import Site from '../layouts/Site.astro';
 import EvidenceCard from '../components/EvidenceCard.astro';
+import BugReport from '../components/BugReport.astro';
 import Icon from '../components/Icon.astro';
 
+// Copy source: freelancer_project/content/landing-v3-copy.md (§14 decisions win).
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
-const mailProblem = `mailto:${email}?subject=Zendesk%20problem`;
+const upwork = 'https://www.upwork.com/freelancers/~01ed8af55d19c042d4';
+const repo = 'https://github.com/ndvelasquez/n8n-ai-ticket-triage';
+const loom = 'https://www.loom.com/share/c06880e29bb645e0bd553a7c55014862';
+const mailTask = `mailto:${email}?subject=Task%20for%20Nestor`;
 const calCall = 'https://cal.com/nestor-velasquez-ynlodg/15min';
 
-const title = 'Nestor Velasquez | Zendesk Support Ops Automation';
+const title = 'Nestor Velasquez | Technical Support, QA Testing & AI Evaluation';
 const description =
-  'I fix Zendesk routing, SLA rules and macros for SaaS and ecommerce support teams. Fixed price from $250, tested and documented. English and Spanish.';
+  'Technical support, manual and game testing, AI evaluation and n8n/Zapier workflows, in English and Spanish. 6+ years in L2/L3 support. Remote from Panama.';
 
 // Structured data: only verifiable facts. No reviews, ratings, address or clients.
 const personId = new URL('/#nestor', Astro.site).href;
@@ -18,31 +23,29 @@ const person = {
   '@type': 'Person',
   '@id': personId,
   name: 'Nestor Velasquez',
-  jobTitle: 'Zendesk Support Ops Automation',
+  jobTitle: 'Technical Support, QA Testing and AI Evaluation',
   email: `mailto:${email}`,
-  sameAs: [linkedin],
+  sameAs: [linkedin, upwork],
   knowsLanguage: ['en', 'es'],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'sales',
     email,
-    url: calCall,
     availableLanguage: ['en', 'es'],
   },
-  knowsAbout: ['Zendesk', 'Ticket routing', 'SLA policies', 'Macros', 'n8n', 'Zapier', 'REST APIs', 'Webhooks'],
+  knowsAbout: ['Technical support', 'Manual testing', 'Game testing', 'AI evaluation', 'Zendesk', 'Jira', 'REST APIs', 'n8n', 'Zapier', 'SQL'],
 };
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     person,
     {
-      '@type': 'Service',
-      name: 'Zendesk Support Ops Automation',
-      serviceType: 'Zendesk routing, SLA rules and macros',
-      description,
+      '@type': 'ProfessionalService',
+      name: 'Fixed-price Zendesk work',
+      serviceType: 'Zendesk routing, SLA rules, macros and ticket triage',
+      url: new URL('/#zendesk', Astro.site).href,
       provider: { '@id': personId },
-      audience: { '@type': 'BusinessAudience', name: 'SaaS and ecommerce support teams' },
-      // Service takes `offers` (makesOffer belongs to Person/Organization).
+      areaServed: 'Worldwide',
       offers: [
         {
           '@type': 'Offer',
@@ -62,57 +65,185 @@ const jsonLd = {
 };
 ---
 <Site title={title} description={description} jsonLd={jsonLd}>
-  <!-- HERO: copy on ground, evidence on the lime field (bleeds right) -->
+  <!-- HERO: copy on ground, real demo output (H-3023) on the lime field -->
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <h1 id="hero-title" class="hero-title">I fix Zendesk <span class="mark"><span>routing, SLA rules and macros</span></span> for SaaS and ecommerce support teams.</h1>
+    <h1 id="hero-title" class="hero-title">I troubleshoot support tickets, test games and apps, and review AI output, <span class="mark"><span>in English and Spanish</span></span>.</h1>
     <div class="hero-copy">
-      <p class="hero-sub">Send me the ticket problem your team keeps working around. We agree on one fix, I build and test it at a fixed price, and you get it documented so your team can maintain it.</p>
+      <p class="hero-sub">I've spent 6+ years in L2/L3 support for SaaS and API platforms, reproducing problems and handing them to engineering with the steps and logs they need. I take remote contracts, part-time roles and short tasks, and I also build Zapier and n8n workflows.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a>
-        <a class="btn btn-ghost" href={mailProblem}><Icon name="mail" />Email me the problem</a>
-        <a class="arrow-link hero-demo" href="/work/ai-ticket-triage">See the triage demo <Icon name="arrow" /></a>
+        <a class="btn btn-primary" href={mailTask}><Icon name="mail" />Email me the task</a>
+        <a class="btn btn-ghost" href={upwork} target="_blank" rel="noopener noreferrer">See my Upwork profile<Icon name="external" /><span class="visually-hidden"> (opens in a new tab)</span></a>
       </div>
-      <p class="hero-price"><strong class="nowrap">Fixed price, from $250</strong> · <span class="nowrap">English and Spanish</span></p>
+      <p class="hero-foot">
+        <a class="arrow-link" href="#proof">See work you can check <Icon name="arrow" /></a>
+        <span class="hero-where">Based in Panama · Remote, UTC-5</span>
+      </p>
     </div>
     <div class="hero-field on-field">
       <EvidenceCard />
     </div>
   </section>
 
-  <!-- PROBLEM: quiet section, heading in the margin, queue rows -->
-  <section class="problem" aria-labelledby="problem-title">
-    <div class="wrap problem-grid">
-      <h2 id="problem-title" class="h2 problem-h">Where the queue breaks</h2>
-      <div>
-        <dl class="queue">
-          <div class="queue-row">
-            <dt>Routing</dt>
-            <dd>A billing question lands in the technical queue. An agent moves it by hand, and the SLA clock keeps running while it waits.</dd>
+  <!-- WORK: heading in the margin, one row per lane -->
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="wrap work-grid">
+      <div class="work-side">
+        <h2 id="work-title" class="h2">What I take on</h2>
+        <p class="work-intro">Four kinds of work, each with what backs it and what I haven't done yet.</p>
+      </div>
+      <div class="lanes">
+        <article class="lane" aria-labelledby="lane-1">
+          <h3 id="lane-1" class="lane-h">Technical support, tier 1 to 3</h3>
+          <dl class="lane-facts">
+            <div class="fact-situation"><dt>Your situation</dt><dd>Tickets come in English and Spanish, and some need someone who can read a log or test an API call before anything goes to engineering.</dd></div>
+            <div><dt>What I do</dt><dd>I answer tickets by email or chat in both languages, reproduce the issue, and escalate it with steps, logs and context. I've worked in Zendesk (as admin), Jira and ServiceNow, and I write knowledge base articles so the same question stops coming back.</dd></div>
+            <div><dt>What backs it</dt><dd>6+ years in L2/L3 support for SaaS and API platforms. 200+ enterprise accounts, around 40 critical incidents a month at 100% SLA, and 95% CSAT on a help desk queue.</dd></div>
+          </dl>
+        </article>
+
+        <article class="lane" aria-labelledby="lane-2">
+          <h3 id="lane-2" class="lane-h">Manual QA and game testing</h3>
+          <div class="lane-body">
+            <dl class="lane-facts">
+              <div class="fact-situation"><dt>Your situation</dt><dd>You need a build tested on real hardware, and you want reports your developers can act on without asking three follow-up questions.</dd></div>
+              <div><dt>What I do</dt><dd>Manual, exploratory and game testing on a gaming laptop (Windows), a Nintendo Switch, an iPhone 15 Pro Max and a Xiaomi 12T Pro (Android). Each report has steps, expected and actual result, device and OS version, frequency, and a screenshot or screen recording. I can test localized builds in English and Spanish.</dd></div>
+              <div><dt>What backs it</dt><dd>Years of reproducing customer issues for engineering. Bugs I've caught include an Add button that returned a server error, pop-ups that opened with broken formatting, and content that showed on desktop but not on mobile. I play shooters, action/adventure, racing, sports and RPGs.</dd></div>
+              <div class="fact-gap"><dt>What I haven't done</dt><dd>I haven't held a formal QA job.</dd></div>
+            </dl>
+            <BugReport />
           </div>
-          <div class="queue-row">
-            <dt>SLA</dt>
-            <dd>First-response breaches pile up in the afternoon, and nobody knows if the cause is the schedule, the priority rules or the assignment.</dd>
-          </div>
-          <div class="queue-row">
-            <dt>Macros</dt>
-            <dd>There are more macros than anyone uses, some are out of date, and agents still rewrite the same reply.</dd>
-          </div>
-          <div class="queue-row">
-            <dt>Manual triage</dt>
-            <dd>Someone reads every new ticket to tag it and pick a queue, and that holds up until volume grows.</dd>
-          </div>
-        </dl>
-        <p class="problem-close">Often the fix sits inside the Zendesk you already pay for: a trigger, a view, an SLA policy or a macro set up wrong.</p>
+        </article>
+
+        <article class="lane" aria-labelledby="lane-3">
+          <h3 id="lane-3" class="lane-h">AI evaluation, language and audio tasks</h3>
+          <dl class="lane-facts">
+            <div class="fact-situation"><dt>Your situation</dt><dd>Your project needs someone to rate, rank or fact-check model answers in English or Spanish, or to work with audio and music.</dd></div>
+            <div><dt>What I do</dt><dd>Response rating and ranking, fact-checking, writing and translation between English and Spanish, prompt writing, and audio or music evaluation.</dd></div>
+            <div><dt>What backs it</dt><dd>C1 English (EF SET 76/100), native Spanish, and an associate degree in computer science (2016). For my n8n demo I wrote 25 held-out test tickets and 8 adversarial ones (prompt injections, mixed intent) before any run, then checked the model's answers against my labels. I play guitar, piano and bass, transcribe audio to sheet music, and record demo tracks in Reaper, Cubase and Cakewalk.</dd></div>
+            <div class="fact-gap"><dt>What I haven't done</dt><dd>I'm new to annotation platforms. Send me the guidelines and a sample task, and I'll tell you if anything is unclear before I start.</dd></div>
+          </dl>
+        </article>
+
+        <article class="lane" aria-labelledby="lane-4">
+          <h3 id="lane-4" class="lane-h">Zendesk and automation</h3>
+          <dl class="lane-facts">
+            <div class="fact-situation"><dt>Your situation</dt><dd>Someone on your team copies data between tools by hand, or your Zendesk routing, SLA rules and macros grew out of control.</dd></div>
+            <div><dt>What I do</dt><dd>Zendesk admin work (triggers, macros, views, SLA policies, auto-assignment), Zapier and n8n workflows, REST API and webhook troubleshooting with Postman, and SQL checks.</dd></div>
+            <div><dt>What backs it</dt><dd>I built Zapier and n8n workflows that cut manual support work by about 70%, and wrote playbooks and documentation that cut response times by 50%. Both demos below are in this lane.</dd></div>
+          </dl>
+          <a class="arrow-link lane-link" href="#zendesk">Fixed-price Zendesk work <Icon name="arrow" /></a>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- OFFERS: heading row, two columns split by a hairline -->
-  <section class="offers" id="offers" aria-labelledby="offers-title">
+  <!-- PROOF: heading row, then the triage demo with the field on the left -->
+  <section class="proof" id="proof" aria-labelledby="proof-title">
+    <div class="wrap proof-head">
+      <h2 id="proof-title" class="h2">Work you can check</h2>
+      <p class="proof-intro">Two projects I built and tested myself, both public. Both are synthetic demos, so the tickets, the store and the labels are mine.</p>
+    </div>
+
+    <div class="triage">
+      <div class="triage-field on-field">
+        <div class="card triage-card">
+          <p class="triage-label">Synthetic demo; not a client project.</p>
+          <table class="data-table">
+            <caption class="visually-hidden">Triage demo results on the held-out set</caption>
+            <thead>
+              <tr><th scope="col">Held-out set, 25 tickets</th><th scope="col">Result</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Category correct</th><td>24 of 25</td></tr>
+              <tr><th scope="row">Auto-routed tickets with the right category</th><td>17 of 17</td></tr>
+              <tr><th scope="row">Sent to human review</th><td>8 of 25</td></tr>
+              <tr><th scope="row">Injected instructions followed</th><td>0 of 2</td></tr>
+              <tr><th scope="row">Priority correct</th><td>23 of 25</td></tr>
+            </tbody>
+          </table>
+          <p class="triage-caveats">I wrote and labeled every ticket. Each number is one run, and results vary between runs. 7 of the 8 tickets sent to review already had the right category, so the flow sends more to people than it needs to.</p>
+        </div>
+      </div>
+      <div class="triage-copy">
+        <h3 class="proj-h">AI ticket triage in n8n</h3>
+        <p>An n8n flow reads a support ticket and asks an LLM for a category and priority, with a quote from the ticket as evidence. Code checks the quote and the confidence, then picks the queue. Tickets the flow is unsure about go to a person.</p>
+        <div class="proj-links">
+          <a class="btn btn-primary" href="/work/ai-ticket-triage#try">Try it live</a>
+          <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
+          <a class="arrow-link" href={repo} rel="noopener noreferrer" target="_blank">Code on GitHub <Icon name="external" /><span class="visually-hidden"> (opens in a new tab)</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brightwick: quiet, on ground (one field per viewport); before/after as a hairline table -->
+    <div class="wrap bw">
+      <div class="bw-copy">
+        <p class="bw-tag">Synthetic demo; not a client project.</p>
+        <h3 class="proj-h">Zendesk routing audit and repair (Brightwick)</h3>
+        <p>I set up a Zendesk trial badly on purpose for a fictional store: all 25 test tickets landed in one group, 3 triggers fought over priority, and 13 macros overlapped. I wrote 8 acceptance tests before changing anything.</p>
+        <p class="bw-result">Run 1 failed and found 3 bugs in my setup. Run 2 passed <span class="mark">8 of 8</span>.</p>
+        <p class="bw-limit">The keyword priority rule is crude. Against my labels it raised 3 of the 5 urgent tickets and missed two.</p>
+        <ul class="bw-links">
+          <li><a class="arrow-link" href="/work/zendesk-workflow-repair">Read the audit <Icon name="arrow" /></a></li>
+          <li><a class="arrow-link" href={loom} rel="noopener noreferrer" target="_blank">Watch the walkthrough (4:40) <Icon name="external" /><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a class="arrow-link" href="/work/brightwick-zendesk-audit-mobile.pdf">Mobile PDF <Icon name="arrow" /></a></li>
+        </ul>
+      </div>
+      <table class="ba">
+        <caption class="visually-hidden">Brightwick Zendesk setup before and after the repair</caption>
+        <thead><tr><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+        <tbody>
+          <tr><td>1 group for every ticket</td><td>4 groups, 7 routing triggers</td></tr>
+          <tr><td>3 triggers rewriting priority</td><td>1 priority trigger</td></tr>
+          <tr><td>1 SLA target (normal, 1 h)</td><td>First reply by priority: 1, 4, 8 and 24 h</td></tr>
+          <tr><td>13 macros</td><td>6 macros, 3 views</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="wrap past">
+      <h3 class="past-h">From past roles</h3>
+      <ul class="dash-list past-list">
+        <li>200+ enterprise accounts supported on a SaaS and API platform</li>
+        <li>Around 40 critical incidents a month, handled at 100% SLA</li>
+        <li>95% CSAT on a help desk queue</li>
+        <li>About 70% less manual support work after a Zapier and n8n automation</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS: heading alone on top, four text columns -->
+  <section class="skills" id="skills" aria-labelledby="skills-title">
+    <div class="wrap">
+      <h2 id="skills-title" class="h2 skills-h">Skills and tools</h2>
+      <div class="skill-cols">
+        <div class="skill">
+          <h3>Support and help desk</h3>
+          <p>Zendesk (admin), Jira, ServiceNow, knowledge base writing, ticket escalation, SSO troubleshooting, AnyDesk, Slack, Google Workspace (admin)</p>
+        </div>
+        <div class="skill">
+          <h3>Testing</h3>
+          <p>Manual, exploratory and game testing, bug reports, localization checks in English and Spanish, Jira</p>
+          <p class="skill-devices"><span class="skill-label">Devices</span> gaming laptop (ASUS TUF Gaming F15, Windows), Nintendo Switch, iPhone 15 Pro Max (iOS 26), Xiaomi 12T Pro (Android 13)</p>
+        </div>
+        <div class="skill">
+          <h3>AI, language and audio</h3>
+          <p>Response rating and fact-checking, prompt writing, LLM test sets, English (C1, EF SET 76/100), Spanish (native), English to Spanish translation, guitar, piano and bass, audio to sheet music, Reaper, Cubase, Cakewalk</p>
+        </div>
+        <div class="skill">
+          <h3>Automation and data</h3>
+          <p>Zapier, n8n, REST APIs, webhooks, Postman, SQL, AWS (S3, Lambda, Athena), New Relic, Coralogix, Splunk, Grafana</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZENDESK: heading row with intro, two offers split by a hairline, the only Cal.com button -->
+  <section class="offers" id="zendesk" aria-labelledby="offers-title">
     <div class="wrap">
       <div class="offers-head">
-        <h2 id="offers-title" class="h2">Two fixed-price offers</h2>
-        <p class="offers-intro">Intro prices for my first three clients.</p>
+        <h2 id="offers-title" class="h2">Fixed-price Zendesk work</h2>
+        <p class="offers-intro">If your Zendesk is the problem, I also sell two fixed-scope projects. Intro prices for my first three clients.</p>
       </div>
 
       <div class="offers-grid">
@@ -121,13 +252,12 @@ const jsonLd = {
           <p class="offer-price">Fixed price, <span class="mark nowrap">from $250</span></p>
           <p class="offer-for">For one routing or escalation problem you can name.</p>
           <ul class="dash-list offer-list">
-            <li>A focused review of the triggers, views, macros and SLA rules involved</li>
+            <li>A review of the triggers, views, macros and SLA rules involved</li>
             <li>One routing or escalation workflow, built and tested against pass/fail checks we agree first</li>
             <li>Up to three supporting macros or views</li>
             <li>A recorded walkthrough and handover notes</li>
-            <li>One round of revisions</li>
           </ul>
-          <p class="offer-scope">One Zendesk instance, up to 6 hours of work including testing and documentation. About one week from access to handover. If the problem doesn't fit in 6 hours, I tell you before we start and we adjust the scope.</p>
+          <p class="offer-scope">One Zendesk instance, up to 6 hours of work including testing and documentation, about one week. If the problem doesn't fit in 6 hours, I tell you before we start.</p>
           <a class="arrow-link offer-case" href="/work/zendesk-workflow-repair">See a sample repair: the Brightwick audit <Icon name="arrow" /></a>
         </article>
 
@@ -137,8 +267,7 @@ const jsonLd = {
           <p class="offer-for">For teams whose ticket categories don't fit native Zendesk rules or built-in AI.</p>
           <ul class="dash-list offer-list">
             <li>New tickets classified by intent, priority and language, using your own list of up to 8 categories</li>
-            <li>Tags and routing decided by rules in code, plus a Slack alert for the tickets you define as urgent</li>
-            <li>Tickets the flow is unsure about go to a person</li>
+            <li>Routing decided by rules in code, plus a Slack alert for the tickets you define as urgent</li>
             <li>An accuracy check on a redacted sample of your tickets, with pass criteria agreed before we start</li>
             <li>Documentation and a walkthrough</li>
           </ul>
@@ -146,65 +275,16 @@ const jsonLd = {
         </article>
       </div>
 
-      <p class="offers-note">Not included: chatbots, chat or messaging integrations, migrations, ongoing monitoring, and software or API costs.</p>
-    </div>
-  </section>
-
-  <!-- DEMO: field switches to the left and holds the numbers + caveats -->
-  <section class="demo" id="demo" aria-labelledby="demo-title">
-    <div class="demo-field on-field">
-      <div class="card demo-card">
-        <p class="demo-label">Synthetic demo, not a client project. Every ticket is invented.</p>
-        <table class="data-table">
-          <caption class="visually-hidden">Triage demo results on the held-out set</caption>
-          <thead>
-            <tr><th scope="col">Held-out set, 25 tickets</th><th scope="col">Result</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">Auto-routed tickets with the right category</th><td>17 of 17</td></tr>
-            <tr><th scope="row">Sent to human review</th><td>8 of 25 (32%)</td></tr>
-            <tr><th scope="row">Wrong categories that reached a team unreviewed</th><td class="wrap-ok">0 <span class="td-note">(the previous version let 1 through)</span></td></tr>
-            <tr><th scope="row">Injected instructions followed</th><td>0 of 2</td></tr>
-            <tr><th scope="row">Priority correct</th><td>23 of 25</td></tr>
-          </tbody>
-        </table>
-        <p class="demo-caveats">The difference between versions is one ticket. 7 of the 8 tickets sent to review already had the right category, so the flow over-escalates. The priority misses were not caught by any check. Results vary between runs, each number is one run, and the labels are mine.</p>
+      <div class="offers-foot">
+        <div class="offers-notes">
+          <p>I work in a sandbox, with temporary access, or on a screen-share where you drive. Nothing changes in production without your approval and a rollback plan.</p>
+          <p class="offers-excl">Not included: chatbots, chat or messaging integrations, migrations, ongoing monitoring, and software or API costs.</p>
+        </div>
+        <div class="offers-cta">
+          <a class="btn btn-primary" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min Zendesk call<span class="visually-hidden"> (opens in a new tab)</span></a>
+          <p class="offers-bring">Bring your Zendesk plan, your monthly ticket volume and the one thing in the queue you'd fix first.</p>
+        </div>
       </div>
-    </div>
-    <div class="demo-copy">
-      <h2 id="demo-title" class="h2">The triage demo: results and caveats</h2>
-      <p>I built a triage flow in n8n and tested it on tickets I wrote myself. The held-out set has 25 tickets, written before any run and used once per version with the prompt frozen.</p>
-      <p class="demo-rule"><strong><span class="mark">The model proposes, the code decides.</span></strong> The model suggests a category and has to quote the sentence in the ticket that supports it. Code checks that the quote appears in the ticket, checks the confidence and whether a second category fits, and picks the queue itself. If anything looks off, the ticket goes to a person.</p>
-      <div class="demo-links">
-        <a class="btn btn-primary" href="/work/ai-ticket-triage#try">Try it live</a>
-        <a class="arrow-link" href="/work/ai-ticket-triage">Read the case study <Icon name="arrow" /></a>
-        <a class="arrow-link" href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Code on GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW: heading alone, then the sequence as a row -->
-  <section class="how" aria-labelledby="how-title">
-    <div class="wrap">
-      <h2 id="how-title" class="h2 how-h">How a project runs</h2>
-      <ol class="steps">
-        <li>
-          <h3>You send me the problem.</h3>
-          <p>Your Zendesk plan, roughly how many tickets you get a month, and what is breaking. I reply within one business day.</p>
-        </li>
-        <li>
-          <h3>I send a one-page scope.</h3>
-          <p>The problem, what I'll deliver, the pass/fail tests, the price and the delivery date. If it doesn't fit the offer, I tell you then.</p>
-        </li>
-        <li>
-          <h3>I work in a sandbox or with temporary access.</h3>
-          <p>A sandbox where you have one. Otherwise named, temporary access with the minimum permissions, or a screen-share where you drive. Nothing changes in production without your approval and a rollback plan.</p>
-        </li>
-        <li>
-          <h3>I hand it over.</h3>
-          <p>A recorded walkthrough, written notes, and one consolidated round of revisions.</p>
-        </li>
-      </ol>
     </div>
   </section>
 
@@ -213,42 +293,29 @@ const jsonLd = {
     <div class="wrap about-grid">
       <div class="about-col">
         <h2 id="about-title" class="about-h">About me</h2>
-        <p class="lead">I'm Nestor Velasquez. I've spent 6+ years in L2/L3 technical support for B2B SaaS and API-based platforms, so I know the queue from the agent's side.</p>
-        <p>I've administered Zendesk (macros, views, SLA policies and auto-assignment), troubleshot REST APIs and webhooks with Postman and SQL, and built automations in Zapier and n8n. In one role I supported 200+ enterprise accounts and built automations that cut manual support effort by about 70%. In L3 incident work I handled around 40 critical incidents a month at 100% SLA compliance.</p>
-        <p>I work in English and Spanish.</p>
-        <p class="about-cv"><a href="/Nestor_Velasquez_CV.pdf" download>Download CV (PDF)</a></p>
+        <p class="lead">I'm Nestor Velasquez. I've worked in technical support since 2019, first on an IT help desk and then in L2/L3 support for SaaS and API platforms.</p>
+        <p>Most days the job was the same: take a problem a customer couldn't describe well, reproduce it, find where it broke, and hand it to engineering with what they needed to fix it. Along the way I administered Zendesk, ran incident work in Jira, built automations in Zapier and n8n, and checked data with SQL. That habit of reproducing and writing up a problem is what I bring to testing and AI evaluation.</p>
+        <p>I hold an associate degree in computer science (2016). I speak native Spanish and C1 English, and I play guitar, piano and bass. I live in Panama and work remotely on UTC-5.</p>
       </div>
     </div>
   </section>
 
-  <!-- FAQ: heading in the margin, questions as a list -->
+  <!-- QUESTIONS: heading in the margin, questions as a list -->
   <section class="faq" aria-labelledby="faq-title">
     <div class="wrap faq-grid">
-      <h2 id="faq-title" class="h2 faq-h">FAQ</h2>
+      <h2 id="faq-title" class="h2 faq-h">Questions</h2>
       <div class="faq-list">
         <div class="qa">
-          <h3>Zendesk already has triggers and its own AI triage. Why would I need you?</h3>
-          <p>Maybe you don't. If a native trigger, an SLA policy or Zendesk's own triage covers your case, I'll tell you and show you where to set it up. A custom flow makes sense when you need your own categories, context from another system, or tighter control over cost, or when you don't have the built-in option.</p>
+          <h3>Have you worked as a QA tester before?</h3>
+          <p>Not in a formal QA role. I've reproduced and documented bugs for engineering for 6+ years as an L2/L3 support analyst, and the sample bug report on this page shows the format I use.</p>
         </div>
         <div class="qa">
-          <h3>Do I have to give you admin access to production?</h3>
-          <p>No. A sandbox or a screen-share where you drive both work. If we change production, I only touch what we agreed, with your approval and a rollback plan.</p>
+          <h3>Have you done annotation or AI training work?</h3>
+          <p>Not on a platform yet. I've written LLM test sets and checked a model's answers against my own labels for my n8n demo. Send me the guidelines and a sample task and I'll tell you if anything is unclear before I start.</p>
         </div>
         <div class="qa">
-          <h3>What if the work takes more than 6 hours?</h3>
-          <p>I check that before we start. If it doesn't fit, I'll adjust the scope with you or tell you it isn't a good fit. Anything extra needs a separate quote you approve first.</p>
-        </div>
-        <div class="qa">
-          <h3>Will this cut our response time by a certain percentage?</h3>
-          <p>I can't promise a number before I see your queue. We agree what "working" means as pass/fail tests, and I build to those.</p>
-        </div>
-        <div class="qa">
-          <h3>Do you work with Freshdesk, Gorgias or HubSpot?</h3>
-          <p>Zendesk only for now.</p>
-        </div>
-        <div class="qa">
-          <h3>How do I pay?</h3>
-          <p>Through Upwork, Contra, or directly by invoice. Same fixed price either way.</p>
+          <h3>How do I pay you?</h3>
+          <p>Through Upwork or Contra, or by direct invoice paid with Payoneer, Wise or PayPal.</p>
         </div>
       </div>
     </div>
@@ -257,14 +324,18 @@ const jsonLd = {
   <!-- CONTACT: the field returns at page scale -->
   <section class="contact on-field" id="contact" aria-labelledby="contact-title">
     <div class="wrap contact-grid">
-      <h2 id="contact-title" class="contact-h">Tell me what's breaking</h2>
+      <h2 id="contact-title" class="contact-h">Send me the task</h2>
       <div class="contact-body">
-        <p class="lead">Book a <span class="nowrap">15-minute</span> call and bring three things: your Zendesk plan, roughly how many tickets you get a month, and the one thing in the queue you'd fix first. I'll tell you where I'd start and whether it fits the fixed-price repair. If you'd rather write, email me the same three things. English or Spanish both work.</p>
-        <a class="btn btn-primary contact-call" href={calCall} target="_blank" rel="noopener noreferrer"><Icon name="calendar" />Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a>
+        <p class="lead">Tell me what the work is, which tools or devices it uses, and how many hours you need. I'll reply with whether I'm a fit and what I'd check first. English or Spanish both work.</p>
+        <a class="btn btn-primary contact-cta" href={mailTask}><Icon name="mail" />Email me the task</a>
         <dl class="contact-list">
           <div>
             <dt>Email</dt>
-            <dd><a class="contact-li" href={mailProblem}><Icon name="mail" />{email}</a></dd>
+            <dd><a class="contact-li" href={mailTask}><Icon name="mail" />{email}</a></dd>
+          </div>
+          <div>
+            <dt>Upwork</dt>
+            <dd><a class="contact-li" href={upwork} target="_blank" rel="noopener noreferrer"><Icon name="external" />upwork.com/freelancers/~01ed8af55d19c042d4<span class="visually-hidden"> (opens in a new tab)</span></a></dd>
           </div>
           <div>
             <dt>LinkedIn</dt>
@@ -278,16 +349,15 @@ const jsonLd = {
 
 <style>
   .nowrap { white-space: nowrap; }
+  .btn :global(svg), .arrow-link :global(svg) { flex: none; }
 
   /* ---------------- HERO ---------------- */
-  /* Title, copy and field are siblings so the field can sit between the
-     title and the copy on small screens (artifact in the first viewport, OB-01). */
   .hero {
     display: grid;
     grid-template-columns: var(--split);
-    grid-template-rows: minmax(calc(var(--header-h) + var(--space-7)), 1fr) auto auto minmax(var(--space-8), 1fr);
+    grid-template-rows: minmax(calc(var(--header-h) + var(--space-6)), 1fr) auto auto minmax(var(--space-7), 1fr);
     grid-template-areas: ". field" "title field" "copy field" ". field";
-    min-height: min(100svh, 940px);
+    min-height: min(100svh, var(--hero-max));
   }
   .hero-title {
     grid-area: title;
@@ -295,50 +365,116 @@ const jsonLd = {
     font-size: var(--type-hero);
     line-height: var(--leading-display);
     letter-spacing: var(--tracking-display);
+    max-width: calc(19ch + 2 * var(--gutter));
   }
   .hero-copy { grid-area: copy; padding-inline: var(--gutter); }
-  .hero-sub { margin-top: var(--space-6); font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 40ch; color: var(--color-ink-2); }
+  .hero-sub { margin-top: var(--space-6); font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 46ch; color: var(--color-ink-2); }
   .hero-ctas { margin-top: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .hero-price {
-    margin-top: var(--space-6);
-    padding-top: var(--space-4);
+  .hero-foot {
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
     border-top: 1px solid var(--color-rule);
-    max-width: 46ch;
-    font-size: var(--type-small);
-    color: var(--color-ink-2);
+    max-width: 52ch;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0 var(--space-5);
   }
-  .hero-price strong { color: var(--color-ink); font-weight: 600; }
-  .hero-title { max-width: calc(15ch + 2 * var(--gutter)); }
+  .hero-where { font-size: var(--type-small); color: var(--color-ink-2); }
   .hero-field {
     grid-area: field;
     background: var(--color-field);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: calc(var(--header-h) + var(--space-6)) clamp(16px, 4vw, 64px) var(--space-8);
+    padding: calc(var(--header-h) + var(--space-6)) var(--gutter) var(--space-8) var(--space-7);
   }
 
-  /* ---------------- PROBLEM ---------------- */
-  .problem { padding-block: var(--space-9) var(--rhythm-5); }
-  .problem-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
-  .problem-h { max-width: 9ch; position: sticky; top: var(--space-6); }
-  .queue { border-bottom: 1px solid var(--color-rule); }
-  .queue-row {
+  /* ---------------- WORK ---------------- */
+  .work { padding-block: var(--space-9) var(--rhythm-5); }
+  .work-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
+  .work-side { position: sticky; top: var(--space-6); }
+  .work-side .h2 { max-width: 9ch; }
+  .work-intro { margin-top: var(--space-5); color: var(--color-ink-2); max-width: 30ch; }
+  .lanes { border-bottom: 1px solid var(--color-rule); }
+  .lane {
     display: grid;
-    grid-template-columns: minmax(150px, 3fr) minmax(0, 7fr);
-    gap: var(--space-5);
-    padding-block: var(--space-5);
-    border-top: 1px solid var(--color-rule);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+    gap: var(--space-3) var(--space-6);
+    padding-block: var(--space-6) var(--space-7);
+    border-top: 1.5px solid var(--color-ink);
   }
-  .queue-row dt { font-family: var(--font-display); font-size: var(--type-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; }
-  .queue-row dd { margin: 0; max-width: 56ch; }
-  .problem-close { margin-top: var(--space-7); font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 48ch; }
+  .lane-h { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; }
+  .lane-facts { display: grid; gap: var(--space-4); max-width: 60ch; }
+  .lane-facts dt { font-size: var(--type-label); line-height: var(--leading-small); font-weight: 600; color: var(--color-ink-2); }
+  .lane-facts dd { margin: var(--space-1) 0 0; }
+  .fact-situation dd { font-size: var(--type-lead); line-height: var(--leading-relaxed); }
+  .fact-gap { padding-top: var(--space-3); border-top: 1px solid var(--color-rule); }
+  .lane-body { display: grid; gap: var(--space-7); }
+  .lane-link { grid-column: 2; margin-top: var(--space-1); }
 
-  /* ---------------- OFFERS ---------------- */
-  .offers { padding-block: var(--space-8) var(--space-9); border-top: 1px solid var(--color-rule); }
+  /* ---------------- PROOF ---------------- */
+  .proof { padding-top: var(--rhythm-3); border-top: 1px solid var(--color-rule); }
+  .proof-head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-5) var(--space-7); align-items: end; padding-bottom: var(--space-8); }
+  .proof-intro { font-size: var(--type-lead); line-height: var(--leading-relaxed); max-width: 44ch; }
+  .proj-h { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; }
+  .proj-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
+
+  .triage { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
+  .triage-field {
+    background: var(--color-field);
+    padding: var(--space-9) var(--space-7) var(--space-9) var(--gutter);
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+  .triage-card { width: 100%; max-width: var(--card-max); margin-right: var(--card-overlap); position: relative; z-index: 1; }
+  .triage-label { padding: var(--space-4) var(--space-5); font-weight: 700; font-size: var(--type-small); border-bottom: 1px solid var(--color-rule); }
+  .triage-caveats { padding: var(--space-4) var(--space-5) var(--space-5); border-top: 1px solid var(--color-rule); font-size: var(--type-body-sm); line-height: var(--leading-relaxed); }
+  .triage-copy {
+    padding: var(--space-9) var(--gutter) var(--space-9) calc(var(--space-9) + var(--space-4));
+    display: flex; flex-direction: column; justify-content: center; gap: var(--space-5);
+    max-width: calc(var(--card-max) + var(--gutter) + var(--space-9));
+  }
+  .triage-copy p { max-width: 54ch; }
+
+  .bw {
+    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--space-6) var(--space-8);
+    align-items: start;
+    padding-block: var(--rhythm-6) var(--space-8);
+  }
+  .bw-copy { display: grid; gap: var(--space-4); max-width: 60ch; }
+  .bw-tag { font-size: var(--type-label); font-weight: 600; }
+  .bw-copy .proj-h { margin-top: calc(-1 * var(--space-2)); }
+  .bw-result { font-size: var(--type-lead); line-height: var(--leading-relaxed); font-weight: 600; }
+  .bw-limit { color: var(--color-ink-2); }
+  .bw-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--space-5); }
+  .ba { width: 100%; border-collapse: collapse; font-size: var(--type-body-sm); line-height: var(--leading-compact); margin-top: var(--space-7); }
+  .ba th { text-align: left; font-family: var(--font-display); font-weight: 400; font-size: var(--type-h3); line-height: var(--leading-snug); padding: 0 var(--space-4) var(--space-3) 0; border-bottom: 1.5px solid var(--color-ink); }
+  .ba td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--color-rule); vertical-align: top; }
+  .ba td:first-child { color: var(--color-ink-2); }
+  .ba td:last-child { font-weight: 600; }
+
+  .past {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--space-4) var(--space-7);
+    padding-block: var(--space-6) var(--rhythm-4);
+  }
+  .past-h { font-size: var(--type-h3); line-height: var(--leading-snug); letter-spacing: -0.01em; padding-top: var(--space-4); border-top: 1.5px solid var(--color-ink); }
+  .past-list { grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-rule); }
+
+  /* ---------------- SKILLS ---------------- */
+  .skills { padding-block: var(--space-8) var(--rhythm-2); border-top: 1px solid var(--color-rule); }
+  .skills-h { max-width: 12ch; }
+  .skill-cols { margin-top: var(--space-7); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); }
+  .skill { border-top: 1.5px solid var(--color-ink); padding-top: var(--space-4); }
+  .skill h3 { font-size: var(--type-h3); line-height: var(--leading-snug); letter-spacing: -0.01em; }
+  .skill p { margin-top: var(--space-3); font-size: var(--type-body-sm); line-height: var(--leading-relaxed); }
+  .skill-devices { color: var(--color-ink-2); }
+  .skill-label { display: block; font-size: var(--type-label); font-weight: 600; color: var(--color-ink); }
+
+  /* ---------------- ZENDESK OFFERS ---------------- */
+  .offers { padding-block: var(--rhythm-6) var(--space-9); background: var(--color-card); border-block: 1px solid var(--color-rule); }
   .offers-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-7); }
-  .offers-head .h2 { max-width: 14ch; }
-  .offers-intro { color: var(--color-ink-2); padding-bottom: 0.4em; }
+  .offers-head .h2 { max-width: 12ch; }
+  .offers-intro { color: var(--color-ink-2); max-width: 44ch; padding-bottom: var(--space-2); }
   .offers-grid { margin-top: var(--space-7); display: grid; grid-template-columns: 1fr 1fr; }
   .offer { padding-block: var(--space-6) var(--space-2); }
   .offer:first-child { padding-right: var(--space-7); }
@@ -349,57 +485,27 @@ const jsonLd = {
   .offer-case { margin-top: var(--space-3); }
   .offer-list { margin-top: var(--space-4); }
   .offer-scope { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-rule); font-size: var(--type-small); color: var(--color-ink-2); max-width: 58ch; }
-  .offers-note { margin-top: var(--space-7); font-size: var(--type-small); color: var(--color-ink-2); }
-  .offers-note::before { content: ""; display: block; width: 48px; height: 1.5px; background: var(--color-ink); margin-bottom: var(--space-3); }
-
-  /* ---------------- DEMO ---------------- */
-  .demo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); }
-  .demo-field {
-    background: var(--color-field);
-    padding: var(--space-9) var(--space-7) var(--space-9) var(--gutter);
-    display: flex; align-items: center; justify-content: flex-end;
+  .offers-foot {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1.5px solid var(--color-ink);
+    display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--space-6) var(--space-8);
+    align-items: start;
   }
-  .demo-card { width: 100%; max-width: 600px; margin-right: var(--card-overlap); position: relative; z-index: 1; }
-  .demo-label { padding: var(--space-4) var(--space-5); font-weight: 700; font-size: var(--type-small); border-bottom: 1px solid var(--color-rule); }
-  .td-note { display: block; font-weight: 400; color: var(--color-ink-2); font-size: var(--type-label); }
-  .demo-caveats { padding: var(--space-4) var(--space-5) var(--space-5); border-top: 1px solid var(--color-rule); font-size: var(--type-body-sm); line-height: var(--leading-relaxed); }
-  .demo-copy {
-    padding: var(--space-9) var(--gutter) var(--space-9) calc(var(--space-9) + var(--space-4));
-    display: flex; flex-direction: column; justify-content: center; gap: var(--space-5);
-    max-width: calc(560px + var(--gutter) + var(--space-9));
-  }
-  .demo-copy .h2 { max-width: 13ch; }
-  .demo-copy p { max-width: 54ch; }
-  .demo-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); }
-
-  /* ---------------- HOW ---------------- */
-  .how { padding-block: var(--rhythm-5) var(--space-8); }
-  .how-h { max-width: 16ch; }
-  .steps { list-style: none; padding: 0; margin-top: var(--space-7); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); counter-reset: step; }
-  .steps li { counter-increment: step; border-top: 1.5px solid var(--color-ink); padding-top: var(--space-4); }
-  .steps li::before {
-    content: counter(step);
-    display: block;
-    font-family: var(--font-display);
-    font-size: var(--type-numeral);
-    line-height: var(--leading-none);
-    letter-spacing: -0.03em;
-    margin-bottom: var(--space-4);
-  }
-  .steps h3 { font-size: var(--type-h3); line-height: var(--leading-snug); letter-spacing: -0.01em; }
-  .steps p { margin-top: var(--space-3); color: var(--color-ink-2); font-size: var(--type-body-sm); }
+  .offers-notes { display: grid; gap: var(--space-3); max-width: 56ch; }
+  .offers-excl { font-size: var(--type-small); color: var(--color-ink-2); }
+  .offers-bring { margin-top: var(--space-3); font-size: var(--type-small); color: var(--color-ink-2); max-width: 40ch; }
 
   /* ---------------- ABOUT ---------------- */
-  .about { padding-block: var(--space-7) var(--rhythm-6); }
+  .about { padding-block: var(--space-8) var(--rhythm-6); }
   .about-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
-  .about-col { grid-column: 2; max-width: var(--measure); display: grid; gap: var(--space-4); padding-top: var(--space-7); border-top: 1px solid var(--color-rule); }
+  .about-col { grid-column: 2; max-width: var(--measure); display: grid; gap: var(--space-4); }
   .about-h { font-size: var(--type-h3-lg); line-height: var(--leading-tight); letter-spacing: -0.02em; margin-bottom: var(--space-2); }
   .about .lead { font-size: var(--type-lead-lg); line-height: var(--leading-compact); }
-  .about-cv { font-size: var(--type-small); }
-  .about-cv a { display: inline-flex; align-items: center; min-height: var(--size-tap); font-weight: 600; }
 
-  /* ---------------- FAQ ---------------- */
-  .faq { padding-block: var(--space-8) var(--rhythm-2); border-top: 1px solid var(--color-rule); }
+  /* ---------------- QUESTIONS ---------------- */
+  .faq { padding-block: var(--space-7) var(--rhythm-2); border-top: 1px solid var(--color-rule); }
   .faq-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
   .faq-h { position: sticky; top: var(--space-6); }
   .faq-list { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-6); }
@@ -411,18 +517,21 @@ const jsonLd = {
   .contact-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-7); align-items: end; }
   .contact-h { font-size: var(--type-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display); max-width: 8ch; }
   .contact-body .lead { max-width: 46ch; }
-  .contact-call { margin-top: var(--space-6); }
-  .contact-list { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-ink); display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-7); }
+  .contact-cta { margin-top: var(--space-6); }
+  .contact-list { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-ink); display: grid; gap: var(--space-3); }
+  .contact-list > div { display: grid; grid-template-columns: calc(var(--space-9) * 0.75) minmax(0, 1fr); align-items: center; gap: var(--space-3); }
   .contact-list dt { font-size: var(--type-label); font-weight: 600; }
-  .contact-list dd { margin: 0; }
+  .contact-list dd { margin: 0; min-width: 0; }
   .contact-li { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--size-tap); font-weight: 600; overflow-wrap: anywhere; }
-  .contact-li :global(svg) { width: 18px; height: 18px; flex: none; }
+  .contact-li :global(svg) { width: var(--space-5); height: var(--space-5); flex: none; }
 
   /* ---------------- RESPONSIVE ---------------- */
   @media (max-width: 1100px) {
-    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-7); }
+    .skill-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-7); }
     .faq-list { grid-template-columns: 1fr; }
-    .demo-copy { padding-left: var(--space-8); }
+    .triage-copy { padding-left: var(--space-8); }
+    .lane { grid-template-columns: 1fr; }
+    .lane-link { grid-column: 1; }
   }
 
   @media (max-width: 900px) {
@@ -432,46 +541,51 @@ const jsonLd = {
       grid-template-areas: "title" "field" "copy";
       min-height: 0;
     }
-    .hero-title { padding-top: calc(var(--header-h) + var(--space-6)); padding-bottom: var(--space-6); max-width: calc(17ch + 2 * var(--gutter)); }
+    .hero-title { padding-top: calc(var(--header-h) + var(--space-6)); padding-bottom: var(--space-6); }
     .hero-field { padding: var(--space-6) var(--gutter) var(--space-6); }
     .hero-copy { padding-top: var(--space-2); padding-bottom: var(--space-8); }
 
-    .problem { padding-block: var(--space-8) var(--space-8); }
-    .problem-grid, .faq-grid { grid-template-columns: 1fr; gap: var(--space-6); }
-    .problem-h, .faq-h { position: static; max-width: none; }
+    .work { padding-block: var(--rhythm-2) var(--space-8); }
+    .work-grid, .faq-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+    .work-side, .faq-h { position: static; }
+    .work-side .h2 { max-width: none; }
 
-    .offers { padding-block: var(--rhythm-2) var(--space-8); }
+    .proof { padding-top: var(--rhythm-1); }
+    .proof-head { grid-template-columns: 1fr; padding-bottom: var(--space-7); }
+    .triage { grid-template-columns: 1fr; }
+    .triage-copy { order: -1; padding: 0 var(--gutter) var(--space-7); max-width: none; }
+    .triage-field { padding: var(--space-7) var(--gutter) var(--space-8); justify-content: flex-start; }
+    .triage-card { margin-right: 0; }
+    .bw { grid-template-columns: 1fr; padding-block: var(--space-8) var(--space-7); }
+    .ba { margin-top: 0; }
+    .past { grid-template-columns: 1fr; padding-block: 0 var(--rhythm-3); }
+
+    .skills { padding-block: var(--rhythm-2) var(--space-8); }
+    .offers { padding-block: var(--rhythm-3) var(--rhythm-2); }
     .offers-grid { grid-template-columns: 1fr; }
     .offer:first-child { padding-right: 0; }
     .offer + .offer { padding-left: 0; border-left: 0; border-top: 1px solid var(--color-rule); margin-top: var(--space-6); padding-top: var(--space-7); }
+    .offers-foot { grid-template-columns: 1fr; margin-top: var(--space-7); }
 
-    .demo { grid-template-columns: 1fr; }
-    .demo-copy { order: -1; padding: var(--space-8) var(--gutter) var(--space-7); max-width: none; }
-    .demo-field { padding: var(--space-7) var(--gutter) var(--space-8); justify-content: flex-start; }
-    .demo-card { margin-right: 0; }
-
-    .how { padding-block: var(--rhythm-3) var(--space-7); }
-    .about { padding-block: var(--space-6) var(--rhythm-4); }
+    .about { padding-block: var(--space-7) var(--rhythm-4); }
     .about-grid { grid-template-columns: 1fr; }
     .about-col { grid-column: 1; }
-    .faq { padding-block: var(--rhythm-2) var(--rhythm-1); }
+    .faq { padding-block: var(--rhythm-1) var(--space-8); }
     .contact { padding-block: var(--rhythm-5) var(--space-8); }
     .contact-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   }
 
   @media (max-width: 560px) {
-    .queue-row { grid-template-columns: 1fr; gap: var(--space-2); }
-    .steps { grid-template-columns: 1fr; }
+    .skill-cols, .past-list { grid-template-columns: 1fr; }
     .data-table th, .data-table td { padding-inline: var(--space-4); }
     .data-table td { white-space: normal; }
-    .demo-label, .demo-caveats { padding-inline: var(--space-4); }
-    .contact-list { flex-direction: column; }
+    .triage-label, .triage-caveats { padding-inline: var(--space-4); }
+    .contact-list > div { grid-template-columns: 1fr; gap: 0; }
   }
 
   @media (max-width: 420px) {
     .hero-sub { font-size: var(--type-body); margin-top: var(--space-5); }
     .hero-ctas { margin-top: var(--space-5); }
     .hero-ctas .btn { flex: 1 1 100%; }
-    .hero-price { margin-top: var(--space-5); }
   }
 </style>

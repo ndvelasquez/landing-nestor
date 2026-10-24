@@ -1,6 +1,7 @@
 // Renders the OG image for /work/zendesk-workflow-repair (1200x630) and a
 // 375 px-wide downscale for the OB-09 check.
-// Usage: PLAYWRIGHT=<path to playwright/index.mjs> node scripts/og/render.mjs [check-dir]
+// Usage: [OG=home] PLAYWRIGHT=<path to playwright/index.mjs> node scripts/og/render.mjs [check-dir]
+// OG=home renders scripts/og/home.html into public/og.png (landing v3 home).
 // Playwright is not a dependency of this repo; on Nestor's machine it lives in
 // C:/Proyectos_IA/career-ops/node_modules/playwright/index.mjs (the default).
 import { pathToFileURL, fileURLToPath } from 'node:url';
@@ -9,8 +10,9 @@ import { dirname, resolve } from 'node:path';
 const pw = process.env.PLAYWRIGHT || 'C:/Proyectos_IA/career-ops/node_modules/playwright/index.mjs';
 const { chromium } = await import(pathToFileURL(pw).href);
 const here = dirname(fileURLToPath(import.meta.url));
-const html = resolve(here, 'zendesk-workflow-repair.html');
-const out = resolve(here, '../../public/work/og-zendesk-workflow-repair.png');
+const name = process.env.OG || 'zendesk-workflow-repair';
+const html = resolve(here, name + '.html');
+const out = resolve(here, name === 'home' ? '../../public/og.png' : '../../public/work/og-' + name + '.png');
 const checkDir = process.argv[2];
 
 const browser = await chromium.launch();
@@ -34,7 +36,7 @@ console.log(`smallest text: ${min.toFixed(1)} px on 1200 -> ${(min * 375 / 1200)
 if (checkDir) {
   const small = await browser.newPage({ viewport: { width: 375, height: 197 } });
   await small.setContent(`<body style="margin:0"><img src="data:image/png;base64,${(await import('node:fs')).readFileSync(out).toString('base64')}" style="width:375px;display:block"></body>`);
-  const p = resolve(checkDir, 'og-zendesk-workflow-repair-375.png');
+  const p = resolve(checkDir, 'og-' + name + '-375.png');
   await small.screenshot({ path: p });
   console.log('wrote', p);
 }

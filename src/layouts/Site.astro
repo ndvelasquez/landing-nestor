@@ -22,7 +22,8 @@ const ogImage = site ? new URL(ogImagePath, site).href : undefined;
 
 const email = 'ndvelasquezl@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/nestor-david-velasquez/';
-const calCall = 'https://cal.com/nestor-velasquez-ynlodg/15min';
+const upwork = 'https://www.upwork.com/freelancers/~01ed8af55d19c042d4';
+const mailTask = `mailto:${email}?subject=Task%20for%20Nestor`;
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const home = isHome ? '' : '/';
 ---
@@ -69,13 +70,14 @@ const home = isHome ? '' : '/';
       <div class="site-header-inner">
         <p class="id">
           <a class="id-name" href={isHome ? '#top' : '/'}>Nestor Velasquez</a>
-          <span class="id-what">Zendesk support ops · SaaS and ecommerce</span>
+          <span class="id-what">Technical support · QA testing · AI evaluation</span>
         </p>
         <nav class="site-nav" aria-label="Main">
-          <a class="nav-wide" href={`${home}#offers`}>Offers</a>
-          <a class="nav-wide" href={isHome ? '#demo' : '/work/ai-ticket-triage'}>Demo</a>
-          <a class="nav-wide" href={`${home}#about`}>About</a>
-          <a class="nav-contact" href={calCall} target="_blank" rel="noopener noreferrer">Book a call<span class="visually-hidden"> (opens in a new tab)</span></a>
+          <a class="nav-wide" href={`${home}#work`}>Work</a>
+          <a class="nav-wide" href={`${home}#proof`}>Proof</a>
+          <a class="nav-wide" href={`${home}#skills`}>Skills</a>
+          <a class="nav-wide" href={`${home}#zendesk`}>Zendesk</a>
+          <a class="nav-contact" href={mailTask}>Email me</a>
         </nav>
       </div>
     </header>
@@ -86,13 +88,12 @@ const home = isHome ? '' : '/';
 
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <p><strong>Nestor Velasquez</strong> · Zendesk support ops · SaaS and ecommerce</p>
+        <p><strong>Nestor Velasquez</strong> · Remote, UTC-5</p>
         <ul class="footer-links">
-          <li><a href={calCall} target="_blank" rel="noopener noreferrer">Book a 15-min call<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-          <li><a href={`mailto:${email}`}>{email}</a></li>
+          <li><a href={mailTask}>Email</a></li>
+          <li><a href={upwork} target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a href={linkedin} rel="me noopener" target="_blank">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-          <li><a href="https://github.com/ndvelasquez/n8n-ai-ticket-triage" rel="noopener noreferrer" target="_blank">Demo code on GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-          <li><a href="/Nestor_Velasquez_CV.pdf" download>Download CV (PDF)</a></li>
+          {/* CV link hidden until the CV is regenerated from profile/MASTER.md (landing-v3-copy §1, §14.9). */}
           <li>© 2026</li>
         </ul>
       </div>
